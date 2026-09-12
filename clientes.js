@@ -12,7 +12,19 @@ formulario.addEventListener("submit", function (e) {
 	let textoCliente = document.createElement("span");
 	textoCliente.textContent = nombre + " - " + rut + " - " + computador;
 
+	let botonSesion = document.createElement("button");
+	botonSesion.textContent = "Iniciar sesión";
+	botonSesion.addEventListener("click", function () {
+		if (botonSesion.textContent === "Iniciar sesión") {
+			botonSesion.textContent = "Finalizar sesión";
+		} else {
+			botonSesion.textContent = "Sesión finalizada";
+			botonSesion.disabled = true;
+		}
+	});
+
 	li.appendChild(textoCliente);
+	li.appendChild(botonSesion);
 	listaClientes.appendChild(li);
 
 	formulario.reset();
