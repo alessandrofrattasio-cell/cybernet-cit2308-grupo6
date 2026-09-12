@@ -16,6 +16,18 @@ formulario.addEventListener("submit", function (e) {
 	botonSesion.textContent = "Iniciar sesión";
 	botonSesion.addEventListener("click", function () {
 		if (botonSesion.textContent === "Iniciar sesión") {
+			let ahora = new Date();
+			let hora = ahora.getHours();
+			let minutos = ahora.getMinutes();
+
+			if (hora < 10) {
+				hora = "0" + hora;
+			}
+			if (minutos < 10) {
+				minutos = "0" + minutos;
+			}
+
+			textoCliente.textContent += ", desde las " + hora + ":" + minutos;
 			botonSesion.textContent = "Finalizar sesión";
 		} else {
 			botonSesion.textContent = "Sesión finalizada";
