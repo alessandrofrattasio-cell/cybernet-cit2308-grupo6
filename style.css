@@ -26,6 +26,28 @@ header p {
    font-weight: bold;
 }
 
+.menu {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 10px;
+   margin-top: 12px;
+}
+
+.menu a {
+   text-decoration: none;
+   color: #087f9b;
+   background-color: #eaf7fb;
+   padding: 8px 12px;
+   border-radius: 999px;
+   font-size: 14px;
+   font-weight: bold;
+}
+
+.menu a:hover {
+   background-color: #d7eef7;
+}
+
 h1,
 h2 {
    color: #087f9b;
