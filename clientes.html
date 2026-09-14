@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="clientes.css">
+	<title>Clientes</title>
+</head>
+<body>
+	<header>
+		<h1>Clientes</h1>
+		<nav class="menu">
+			<a href="login.html">Login</a>
+			<a href="register.html">Registro</a>
+			<a href="computadores.html">Computadores</a>
+			<a href="clientes.html">Clientes</a>
+			<a href="servicios.html">Servicios</a>
+			<a href="historial.html">Historial</a>
+			<a href="resumen.html">Resumen</a>
+		</nav>
+	</header>
+
+	<main>
+		<section>
+			<h2>Agregar cliente</h2>
+			<form id="formulario-clientes">
+				<div>
+					<label for="nombre">Nombre</label>
+					<input type="text" id="nombre" name="nombre" minlength="3" required>
+				</div>
+
+				<div>
+					<label for="rut">RUT</label>
+					<input type="text" id="rut" name="rut" required>
+				</div>
+
+				<div>
+					<label for="computador">Computador asignado</label>
+					<select id="computador" name="computador" required>
+						<option value="">Selecciona un computador.</option>
+						<option value="PC 01">PC 01</option>
+						<option value="PC 02">PC 02</option>
+						<option value="PC 03">PC 03</option>
+					</select>
+				</div>
+
+				<button type="submit">Agregar</button>
+			</form>
+		</section>
+
+		<section>
+			<h2>Clientes</h2>
+			<ul id="clientes"></ul>
+		</section>
+	</main>
+	<script src="clientes.js"></script>
+</body>
+</html>
