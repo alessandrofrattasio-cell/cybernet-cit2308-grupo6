@@ -87,3 +87,9 @@ class ComputadoresController {
       this.idEditando = null;
    }
 }
+
+function registrarComputadores(Alpine, servicio) {
+   Alpine.data("computadores", function () {
+      return new ComputadoresController(servicio);
+   });
+}
