@@ -32,6 +32,7 @@ function listaClientesController(servicio) {
         clientes: [],
         cargando: false,
         error: "",
+        editandoId: null,
         async cargar() {
             this.error = "";
             this.showLoading(true);
@@ -44,6 +45,31 @@ function listaClientesController(servicio) {
         },
         estaVacia() {
             return this.cargando === false && this.error === "" && this.clientes.length === 0;
+        },
+        empezarEdicion(cliente) {
+            this.editandoId = cliente.id;
+        },
+        async cancelarEdicion() {
+            this.editandoId = null;
+            await this.cargar();
+        },
+        async guardarEdicion(cliente) {
+            this.error = "";
+            try {
+                await servicio.editar(cliente);
+                this.editandoId = null;
+            } catch (fallo) {
+                this.showError(fallo.message);
+            }
+        },
+        async eliminar(id) {
+            this.error = "";
+            try {
+                await servicio.eliminar(id);
+                await this.cargar();
+            } catch (fallo) {
+                this.showError(fallo.message);
+            }
         },
         showLoading(valor) {
             this.cargando = valor;
