@@ -26,3 +26,30 @@ function formularioClienteController(servicio) {
         }
     };
 }
+
+function listaClientesController(servicio) {
+    return {
+        clientes: [],
+        cargando: false,
+        error: "",
+        async cargar() {
+            this.error = "";
+            this.showLoading(true);
+            try {
+                this.clientes = await servicio.listar();
+            } catch (fallo) {
+                this.showError(fallo.message);
+            }
+            this.showLoading(false);
+        },
+        estaVacia() {
+            return this.cargando === false && this.error === "" && this.clientes.length === 0;
+        },
+        showLoading(valor) {
+            this.cargando = valor;
+        },
+        showError(mensaje) {
+            this.error = mensaje;
+        }
+    };
+}
