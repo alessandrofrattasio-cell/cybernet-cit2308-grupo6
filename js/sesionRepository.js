@@ -17,4 +17,24 @@ class LocalStorageSesionRepository extends Repository {
         localStorage.setItem(this.clave, JSON.stringify(sesiones));
         return sesion;
     }
+        async editar(sesion) {
+        let sesiones = await this.listar();
+        for (let i = 0; i < sesiones.length; i++) {
+            if (sesiones[i].id === sesion.id) {
+                sesiones[i] = sesion;
+            }
+        }
+        localStorage.setItem(this.clave, JSON.stringify(sesiones));
+        return sesion;
+    }
+    async eliminar(id) {
+        let sesiones = await this.listar();
+        let restantes = [];
+        for (let i = 0; i < sesiones.length; i++) {
+            if (sesiones[i].id !== id) {
+                restantes.push(sesiones[i]);
+            }
+        }
+        localStorage.setItem(this.clave, JSON.stringify(restantes));
+    }
 }
