@@ -63,7 +63,18 @@
 			<ul>
 				<template x-for="cliente in clientes" :key="cliente.id">
 					<li>
-						<span x-text="cliente.nombre + ' - ' + cliente.rut + ' - ' + cliente.computador"></span>
+						<span x-show="editandoId !== cliente.id" x-text="cliente.nombre + ' - ' + cliente.rut + ' - ' + cliente.computador"></span>
+						<input x-show="editandoId === cliente.id" type="text" x-model="cliente.nombre" minlength="3" aria-label="Nombre">
+						<input x-show="editandoId === cliente.id" type="text" x-model="cliente.rut" aria-label="RUT">
+						<select x-show="editandoId === cliente.id" x-model="cliente.computador" aria-label="Computador asignado">
+							<option value="PC 01">PC 01</option>
+							<option value="PC 02">PC 02</option>
+							<option value="PC 03">PC 03</option>
+						</select>
+						<button type="button" x-show="editandoId !== cliente.id" @click="empezarEdicion(cliente)">Editar</button>
+						<button type="button" x-show="editandoId !== cliente.id" @click="eliminar(cliente.id)">Eliminar</button>
+						<button type="button" x-show="editandoId === cliente.id" @click="guardarEdicion(cliente)">Guardar</button>
+						<button type="button" x-show="editandoId === cliente.id" @click="cancelarEdicion()">Cancelar</button>
 					</li>
 				</template>
 			</ul>
