@@ -5,6 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="clientes.css">
 	<title>Clientes</title>
+	<script defer src="js/repositorio.js"></script>
+	<script defer src="js/clienteRepository.js"></script>
+	<script defer src="js/clienteService.js"></script>
+	<script defer src="js/clienteController.js"></script>
+	<script defer src="js/app.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
 </head>
 <body>
 	<header>
@@ -21,22 +27,22 @@
 	</header>
 
 	<main>
-		<section>
+		<section x-data="formularioCliente">
 			<h2>Agregar cliente</h2>
-			<form id="formulario-clientes">
+			<form @submit.prevent="agregar()">
 				<div>
 					<label for="nombre">Nombre</label>
-					<input type="text" id="nombre" name="nombre" minlength="3" required>
+					<input type="text" id="nombre" x-model="nombre" minlength="3" required>
 				</div>
 
 				<div>
 					<label for="rut">RUT</label>
-					<input type="text" id="rut" name="rut" required>
+					<input type="text" id="rut" x-model="rut" required>
 				</div>
 
 				<div>
 					<label for="computador">Computador asignado</label>
-					<select id="computador" name="computador" required>
+					<select id="computador" x-model="computador" required>
 						<option value="">Selecciona un computador.</option>
 						<option value="PC 01">PC 01</option>
 						<option value="PC 02">PC 02</option>
@@ -44,15 +50,24 @@
 					</select>
 				</div>
 
+				<p class="error" x-show="error" x-text="error"></p>
 				<button type="submit">Agregar</button>
 			</form>
 		</section>
 
-		<section>
+		<section x-data="listaClientes" x-init="cargar()" @clientes-cambiaron.window="cargar()">
 			<h2>Clientes</h2>
-			<ul id="clientes"></ul>
+			<p x-show="cargando">Cargando clientes...</p>
+			<p class="error" x-show="error" x-text="error"></p>
+			<p x-show="estaVacia()">Todavía no hay clientes.</p>
+			<ul>
+				<template x-for="cliente in clientes" :key="cliente.id">
+					<li>
+						<span x-text="cliente.nombre + ' - ' + cliente.rut + ' - ' + cliente.computador"></span>
+					</li>
+				</template>
+			</ul>
 		</section>
 	</main>
-	<script src="clientes.js"></script>
 </body>
 </html>
