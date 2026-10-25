@@ -6,12 +6,15 @@
 		<title>Computadores | Cyber-Cafe</title>
 		<link rel="stylesheet" href="style.css">
 		<link rel="stylesheet" href="computadores.css">
-		<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 		<script src="js/repositorio.js" defer></script>
+		<script src="js/clienteRepository.js" defer></script>
+		<script src="js/clienteService.js" defer></script>
+		<script src="js/clienteController.js" defer></script>
 		<script src="js/computadores-repositorio.js" defer></script>
 		<script src="js/computadores-servicio.js" defer></script>
 		<script src="js/computadores-controlador.js" defer></script>
 		<script src="js/app.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 	</head>
 	<body class="pagina-computadores">
 		<header>
@@ -50,7 +53,7 @@
 
 				<h2>Computadores registrados</h2>
 				<p x-show="!cargando && !error && computadores.length === 0">No hay computadores registrados.</p>
-				<template x-for="computador in computadores" :key="computador.id">
+				<template x-for="computador in computadores" :key="computador.id + '-' + computador.nombre + '-' + computador.estado + '-' + computador.precioHora">
 					<article class="computador" x-data="{ equipo: computador }">
 						<h3 x-text="equipo.nombre"></h3>
 						<p>Estado: <span x-text="equipo.estado"></span></p>

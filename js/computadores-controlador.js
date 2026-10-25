@@ -50,12 +50,22 @@ class ComputadoresController {
 
          if (this.idEditando === null) {
             await this.servicio.crear(computador);
+            this.computadores = await this.servicio.listar();
          } else {
             computador.id = this.idEditando;
             await this.servicio.editar(computador);
+
+            let posicion = this.computadores.findIndex(function (equipo) {
+               return equipo.id === computador.id;
+            });
+
+            if (posicion !== -1) {
+               this.computadores[posicion].nombre = computador.nombre;
+               this.computadores[posicion].estado = computador.estado;
+               this.computadores[posicion].precioHora = computador.precioHora;
+            }
          }
 
-         this.computadores = await this.servicio.listar();
          this.cancelarEdicion();
       } catch (error) {
          this.showError(error);
