@@ -5,7 +5,12 @@
       <title>Iniciar Sesión</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="style.css">
-      <script src="script.js" defer></script>
+      <script src="js/repositorio.js" defer></script>
+      <script src="js/usuarioRepository.js" defer></script>
+      <script src="js/usuarioService.js" defer></script>
+      <script src="js/usuarioController.js" defer></script>
+      <script src="js/app.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
    </head>
    <body>
       <header>
@@ -22,13 +27,17 @@
       </header>
       <main>
          <h1>Iniciar Sesión</h1>
-         <form action="computadores.html" method="get">
+         <form x-data="formularioLoginUsuarios" @submit.prevent="iniciarSesion()">
             <label for="usuario">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+            <input type="text" id="usuario" name="usuario" placeholder="Usuario" x-model="nombreUsuario" required>
             <label for="contrasena">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena" placeholder="********" required>
+            <input type="password" id="contrasena" name="contrasena" placeholder="********" x-model="contrasena" required>
 
-            <button type="submit">Iniciar Sesión</button>
+            <p x-show="cargando" role="status">Iniciando sesión...</p>
+            <p x-show="error" x-text="error" role="alert"></p>
+            <p x-show="mensaje" x-text="mensaje" role="status"></p>
+            <p x-show="usuarioActivo"><a href="computadores.html">Ir a computadores</a></p>
+            <button type="submit" :disabled="cargando">Iniciar Sesión</button>
          </form>
          <p>¿No tienes cuenta? <a href="register.html">Regístrate aquí</a></p>
       </main>
