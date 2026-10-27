@@ -29,4 +29,8 @@ document.addEventListener("alpine:init", function () {
             return crearFormularioLoginUsuarios(servicioUsuarios);
         });
     }
+
+    if (typeof crearEstadoConexion !== "undefined") {
+        Alpine.data("estadoConexion", crearEstadoConexion);
+    }
 });

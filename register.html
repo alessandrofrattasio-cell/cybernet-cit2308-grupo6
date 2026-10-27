@@ -9,10 +9,13 @@
       <script src="js/usuarioRepository.js" defer></script>
       <script src="js/usuarioService.js" defer></script>
       <script src="js/usuarioController.js" defer></script>
+      <script src="js/conexionController.js" defer></script>
+      <script src="js/registrarServiceWorker.js" defer></script>
       <script src="js/app.js" defer></script>
       <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
    </head>
    <body>
+      <p x-data="estadoConexion" x-init="iniciar()" x-show="sinConexion" role="status">Sin conexión. La aplicación está usando los archivos guardados.</p>
       <header>
          <p>CyberNet</p>
          <nav class="menu">
