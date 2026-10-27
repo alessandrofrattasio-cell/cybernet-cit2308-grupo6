@@ -71,6 +71,9 @@ function listaClientesController(servicio) {
                 this.showError(fallo.message);
             }
         },
+        pedirSesion(cliente) {
+            this.$dispatch("iniciar-sesion", cliente);
+        },
         showLoading(valor) {
             this.cargando = valor;
         },

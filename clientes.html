@@ -77,6 +77,7 @@
 						<button type="button" x-show="editandoId !== cliente.id" @click="eliminar(cliente.id)">Eliminar</button>
 						<button type="button" x-show="editandoId === cliente.id" @click="guardarEdicion(cliente)">Guardar</button>
 						<button type="button" x-show="editandoId === cliente.id" @click="cancelarEdicion()">Cancelar</button>
+						<button type="button" x-show="editandoId !== cliente.id" @click="pedirSesion(cliente)">Iniciar sesión</button>						
 					</li>
 				</template>
 			</ul>
