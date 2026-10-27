@@ -34,6 +34,25 @@ function listaSesionesController(servicio) {
                 this.showError(fallo.message);
             }
         },
+                formatearHora(milisegundos) {
+            let fecha = new Date(milisegundos);
+            let hora = fecha.getHours();
+            let minutos = fecha.getMinutes();
+            if (hora < 10) {
+                hora = "0" + hora;
+            }
+            if (minutos < 10) {
+                minutos = "0" + minutos;
+            }
+            return hora + ":" + minutos;
+        },
+        describir(sesion) {
+            let texto = sesion.clienteNombre + " - " + sesion.computador + " - desde las " + this.formatearHora(sesion.horaInicio);
+            if (sesion.estado === "finalizada") {
+                texto = texto + " - hasta las " + this.formatearHora(sesion.horaFin) + " - $" + sesion.monto;
+            }
+            return texto;
+        },
         showLoading(valor) {
             this.cargando = valor;
         },
