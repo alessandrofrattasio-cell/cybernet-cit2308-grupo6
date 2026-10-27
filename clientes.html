@@ -28,7 +28,6 @@
 			<a href="resumen.html">Resumen</a>
 		</nav>
 	</header>
-
 	<main>
 		<section x-data="formularioCliente">
 			<h2>Agregar cliente</h2>
@@ -78,6 +77,20 @@
 						<button type="button" x-show="editandoId !== cliente.id" @click="eliminar(cliente.id)">Eliminar</button>
 						<button type="button" x-show="editandoId === cliente.id" @click="guardarEdicion(cliente)">Guardar</button>
 						<button type="button" x-show="editandoId === cliente.id" @click="cancelarEdicion()">Cancelar</button>
+					</li>
+				</template>
+			</ul>
+		</section>
+		<section x-data="listaSesiones" x-init="cargar()" @iniciar-sesion.window="iniciar($event.detail)">
+			<h2>Sesiones</h2>
+			<p x-show="cargando">Cargando sesiones...</p>
+			<p class="error" x-show="error" x-text="error"></p>
+			<p x-show="estaVacia()">Todavía no hay sesiones.</p>
+			<ul>
+				<template x-for="sesion in sesiones" :key="sesion.id">
+					<li>
+						<span x-text="describir(sesion)"></span>
+						<button type="button" x-show="sesion.estado === 'activa'" @click="finalizar(sesion.id)">Finalizar sesión</button>
 					</li>
 				</template>
 			</ul>
