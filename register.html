@@ -5,8 +5,17 @@
       <title>Crear cuenta de encargado</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="style.css">
+      <script src="js/repositorio.js" defer></script>
+      <script src="js/usuarioRepository.js" defer></script>
+      <script src="js/usuarioService.js" defer></script>
+      <script src="js/usuarioController.js" defer></script>
+      <script src="js/conexionController.js" defer></script>
+      <script src="js/registrarServiceWorker.js" defer></script>
+      <script src="js/app.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
    </head>
    <body>
+      <p x-data="estadoConexion" x-init="iniciar()" x-show="sinConexion" role="status">Sin conexión. La aplicación está usando los archivos guardados.</p>
       <header>
          <p>CyberNet</p>
          <nav class="menu">
@@ -21,19 +30,22 @@
       </header>
       <main>
          <h1>Crear cuenta de encargado</h1>
-         <form action="login.html" method="get">
+         <form x-data="formularioRegistroUsuarios" @submit.prevent="registrar()">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre" x-model="usuario.nombre" required>
             <label for="rut">RUT:</label>
-            <input type="text" id="rut" name="rut" placeholder="12345678-9" pattern="[0-9]{7,8}-[0-9Kk]" title="Escribe un RUT como 12345678-9" required>
+            <input type="text" id="rut" name="rut" placeholder="12345678-9" pattern="[0-9]{7,8}-[0-9Kk]" title="Escribe un RUT como 12345678-9" x-model="usuario.rut" required>
             <label for="correo">Correo electrónico:</label>
-            <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
+            <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" x-model="usuario.correo" required>
             <label for="usuario">Nombre de usuario:</label>
-            <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" required>
+            <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" x-model="usuario.usuario" required>
             <label for="contrasena">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena" placeholder="********" required>
+            <input type="password" id="contrasena" name="contrasena" placeholder="********" x-model="usuario.contrasena" required>
 
-            <button type="submit">Registrarse</button>
+            <p x-show="cargando" role="status">Creando cuenta...</p>
+            <p x-show="error" x-text="error" role="alert"></p>
+            <p x-show="mensaje" x-text="mensaje" role="status"></p>
+            <button type="submit" :disabled="cargando">Registrarse</button>
          </form>
 
          <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>

@@ -1,0 +1,29 @@
+body.pagina-computadores {
+   padding: 15px;
+}
+
+body.pagina-computadores section {
+   grid-template-columns: minmax(0, 1fr);
+}
+
+body.pagina-computadores section h2 {
+   grid-column: auto;
+}
+
+body.pagina-computadores article {
+   min-width: 0;
+}
+
+@media (min-width: 700px) {
+   body.pagina-computadores {
+      padding: 30px;
+   }
+
+   body.pagina-computadores section {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+   }
+
+   body.pagina-computadores section h2 {
+      grid-column: 1 / -1;
+   }
+}
