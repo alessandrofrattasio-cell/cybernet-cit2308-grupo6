@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+   <link rel="manifest" href="manifest.json">
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Historial de sesiones | CyberNet</title>
@@ -20,15 +21,21 @@
       </nav>
    </header>
 
-   <main>
-      <section>
-         <h2>Sesiones finalizadas</h2>
-         <ul>
-            <li>Cliente: Ana Pérez | Computador 01 | 2 horas | $2.000</li>
-            <li>Cliente: Luis Soto | Computador 02 | 1 hora | $1.000</li>
-         </ul>
-      </section>
-   </main>
+   <main x-data="historialController(window.sesionesService)" class="contenedor-historial">
+    <div x-show="estado === 'cargando'">Cargando historial...</div>
+    <div x-show="estado === 'error'" x-cloak>Error al cargar el historial.</div>
+    <div x-show="estado === 'vacio'" x-cloak>No hay sesiones registradas.</div>
+    
+    <div x-show="estado === 'normal'" x-cloak>
+        <ul class="lista-historial">
+            <template x-for="sesion in sesiones" :key="sesion.id">
+                <li>
+                    <span x-text="'Equipo: ' + sesion.computador + ' - Inicio: ' + sesion.horaInicio + ' - Fin: ' + (sesion.horaFin || 'En curso')"></span>
+                </li>
+            </template>
+        </ul>
+    </div>
+</main>
 
    <footer>
       <p>CyberNet - Plataforma para administrar un cibercafé</p>
