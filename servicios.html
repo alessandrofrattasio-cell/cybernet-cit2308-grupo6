@@ -6,16 +6,13 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Servicios adicionales | CyberNet</title>
    <link rel="stylesheet" href="style.css">
-   <script src="servicios.js" defer></script>
 </head>
 <body>
    <header>
       <h1>Servicios adicionales</h1>
    </header>
 
-   
-<main x-data="serviciosController(window.serviciosService)" class="contenedor-servicios">
-    
+   <main x-data="serviciosController(window.serviciosService)" class="contenedor-servicios">
     <div x-show="estado === 'cargando'" class="estado-cargando">
         <p>Cargando servicios...</p>
     </div>
@@ -30,7 +27,6 @@
     </div>
 
     <div x-show="estado === 'normal'" class="estado-normal" x-cloak>
-        
         <form @submit.prevent="guardarNuevo()" class="formulario-servicios">
             <input type="text" x-model="formulario.computador" placeholder="Nombre del equipo" required>
             <input type="text" x-model="formulario.servicio" placeholder="Tipo de servicio" required>
@@ -47,10 +43,14 @@
             </template>
         </ul>
     </div>
-</main>
+   </main>
 
    <footer>
       <p>CyberNet - Plataforma para administrar un cibercafé</p>
    </footer>
+
+   
+   <script type="module" src="js/app.js"></script>
+   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>
