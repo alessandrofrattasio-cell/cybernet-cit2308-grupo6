@@ -1,4 +1,4 @@
-const CACHE_NAME = "cybernet-shell-v1";
+const CACHE_NAME = "cybernet-shell-v2";
 const ALPINE_URL = "https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js";
 const ARCHIVOS = [
    "./login.html",
@@ -24,6 +24,9 @@ const ARCHIVOS = [
    "./js/usuarioRepository.js",
    "./js/usuarioService.js",
    "./js/usuarioController.js",
+   "./js/sesionRepository.js",
+   "./js/sesionService.js",
+   "./js/sesionController.js",
    "./js/app.js",
    "./js/conexionController.js",
    "./js/registrarServiceWorker.js"
