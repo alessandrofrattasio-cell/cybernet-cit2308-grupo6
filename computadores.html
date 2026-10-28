@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Computadores | Cyber-Cafe</title>
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="computadores.css">
+		<script src="js/conexionController.js" defer></script>
+		<script src="js/registrarServiceWorker.js" defer></script>
+		<script src="js/repositorio.js" defer></script>
+		<script src="js/clienteRepository.js" defer></script>
+		<script src="js/clienteService.js" defer></script>
+		<script src="js/clienteController.js" defer></script>
+		<script src="js/computadores-repositorio.js" defer></script>
+		<script src="js/computadores-servicio.js" defer></script>
+		<script src="js/computadores-controlador.js" defer></script>
+		<script src="js/app.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+	</head>
+	<body class="pagina-computadores">
+		<p x-data="estadoConexion" x-init="iniciar()" x-show="sinConexion" role="status">Sin conexión. La aplicación está usando los archivos guardados.</p>
+		<header>
+			<p>CyberNet</p>
+			<nav class="menu">
+				<a href="login.html">Login</a>
+				<a href="register.html">Registro</a>
+				<a href="computadores.html">Computadores</a>
+				<a href="clientes.html">Clientes</a>
+				<a href="servicios.html">Servicios</a>
+				<a href="historial.html">Historial</a>
+				<a href="resumen.html">Resumen</a>
+			</nav>
+		</header>
+		<main x-data="computadores" x-init="init()" @editar-computador="editar($event.detail)" @eliminar-computador="eliminar($event.detail)">
+			<h1>Computadores</h1>
+
+			<section>
+				<h2>Gestión de computadores</h2>
+				<p x-show="cargando" role="status">Cargando computadores...</p>
+				<p x-show="error" x-text="error" role="alert"></p>
+				<form @submit.prevent="guardar()">
+					<label for="nombre-computador">Nombre</label>
+					<input id="nombre-computador" type="text" x-model="computador.nombre" required>
+					<label for="estado-computador">Estado</label>
+					<select id="estado-computador" x-model="computador.estado" required>
+						<option value="Disponible">Disponible</option>
+						<option value="Ocupado">Ocupado</option>
+						<option value="Fuera de servicio">Fuera de servicio</option>
+					</select>
+					<label for="precio-computador">Precio por hora</label>
+					<input id="precio-computador" type="number" min="1" x-model.number="computador.precioHora" required>
+					<button type="submit" x-text="idEditando === null ? 'Agregar computador' : 'Guardar cambios'"></button>
+					<button type="button" x-show="idEditando !== null" @click="cancelarEdicion()">Cancelar</button>
+				</form>
+
+				<h2>Computadores registrados</h2>
+				<p x-show="!cargando && !error && computadores.length === 0">No hay computadores registrados.</p>
+				<template x-for="computador in computadores" :key="computador.id + '-' + computador.nombre + '-' + computador.estado + '-' + computador.precioHora">
+					<article class="computador" x-data="{ equipo: computador }">
+						<h3 x-text="equipo.nombre"></h3>
+						<p>Estado: <span x-text="equipo.estado"></span></p>
+						<p>Precio por hora: $<span x-text="equipo.precioHora"></span></p>
+						<button type="button" @click="$dispatch('editar-computador', equipo)">Editar</button>
+						<button type="button" @click="$dispatch('eliminar-computador', equipo.id)">Eliminar</button>
+					</article>
+				</template>
+			</section>
+
+			<p><a href="login.html">Cerrar sesión</a></p>
+		</main>
+		<footer>
+			<p>CyberNet - Plataforma para administrar un cibercafé</p>
+		</footer>
+	</body>
+</html>

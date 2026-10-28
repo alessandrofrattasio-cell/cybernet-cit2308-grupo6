@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="clientes.css">
+	<title>Clientes</title>
+	<script defer src="js/repositorio.js"></script>
+	<script defer src="js/clienteRepository.js"></script>
+	<script defer src="js/clienteService.js"></script>
+	<script defer src="js/clienteController.js"></script>
+	<script defer src="js/app.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+</head>
+<body>
+	<header>
+		<h1>Clientes</h1>
+		<nav class="menu">
+			<a href="login.html">Login</a>
+			<a href="register.html">Registro</a>
+			<a href="computadores.html">Computadores</a>
+			<a href="clientes.html">Clientes</a>
+			<a href="servicios.html">Servicios</a>
+			<a href="historial.html">Historial</a>
+			<a href="resumen.html">Resumen</a>
+		</nav>
+	</header>
+
+	<main>
+		<section x-data="formularioCliente">
+			<h2>Agregar cliente</h2>
+			<form @submit.prevent="agregar()">
+				<div>
+					<label for="nombre">Nombre</label>
+					<input type="text" id="nombre" x-model="nombre" minlength="3" required>
+				</div>
+
+				<div>
+					<label for="rut">RUT</label>
+					<input type="text" id="rut" x-model="rut" required>
+				</div>
+
+				<div>
+					<label for="computador">Computador asignado</label>
+					<select id="computador" x-model="computador" required>
+						<option value="">Selecciona un computador.</option>
+						<option value="PC 01">PC 01</option>
+						<option value="PC 02">PC 02</option>
+						<option value="PC 03">PC 03</option>
+					</select>
+				</div>
+
+				<p class="error" x-show="error" x-text="error"></p>
+				<button type="submit">Agregar</button>
+			</form>
+		</section>
+
+		<section x-data="listaClientes" x-init="cargar()" @clientes-cambiaron.window="cargar()">
+			<h2>Clientes</h2>
+			<p x-show="cargando">Cargando clientes...</p>
+			<p class="error" x-show="error" x-text="error"></p>
+			<p x-show="estaVacia()">Todavía no hay clientes.</p>
+			<ul>
+				<template x-for="cliente in clientes" :key="cliente.id">
+					<li>
+						<span x-text="cliente.nombre + ' - ' + cliente.rut + ' - ' + cliente.computador"></span>
+					</li>
+				</template>
+			</ul>
+		</section>
+	</main>
+</body>
+</html>
