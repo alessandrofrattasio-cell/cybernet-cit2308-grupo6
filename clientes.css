@@ -138,22 +138,6 @@ button:focus-visible {
     outline: 3px solid rgba(42, 111, 176, 0.4);
     outline-offset: 2px;
 }
-button.peligro {
-    background: var(--rojo);
-    box-shadow: 0 2px 4px rgba(176, 0, 32, 0.3);
-}
-button.peligro:hover {
-    background: #8a0019;
-    box-shadow: 0 4px 8px rgba(176, 0, 32, 0.35);
-}
-button.secundario {
-    background: var(--gris);
-    box-shadow: 0 2px 4px rgba(107, 114, 128, 0.3);
-}
-button.secundario:hover {
-    background: #4b5563;
-    box-shadow: 0 4px 8px rgba(107, 114, 128, 0.35);
-}
 form button {
     width: 100%;
 }
