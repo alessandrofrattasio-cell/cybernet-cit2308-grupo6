@@ -35,10 +35,14 @@ header {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
 }
 
-header h1 {
+header h1,
+header p {
     margin: 0 0 14px;
+    color: white;
     font-size: 28px;
+    font-weight: 700;
     letter-spacing: 0.5px;
+    text-align: left;
 }
 
 .menu {
@@ -62,8 +66,8 @@ header h1 {
     transform: translateY(-1px);
 }
 
-.menu a.activo, 
-.menu a[href="clientes.html"] {
+.menu a.activo,
+.menu a[aria-current="page"] {
     background: white;
     color: var(--azul);
     font-weight: 700;
@@ -73,9 +77,9 @@ main {
     padding: 16px;
 }
 
-section, 
-.contenedor-servicios, 
-.contenedor-historial, 
+section,
+.contenedor-servicios,
+.contenedor-historial,
 .contenedor-resumen {
     background: white;
     border-radius: 12px;
@@ -109,6 +113,10 @@ section,
 section p {
     margin: 0 0 8px;
     color: var(--gris);
+}
+
+h1 {
+    color: var(--azul);
 }
 
 h2, h3 {
@@ -307,6 +315,49 @@ article p {
     text-align: left;
 }
 
+/* ---------- Footer ---------- */
+footer {
+    padding: 16px;
+    color: var(--gris);
+    font-size: 14px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    color: var(--gris);
+}
+
+/* ---------- Cerrar sesión (igual en todas las páginas) ---------- */
+.cerrar-sesion,
+#cerrarSesion,
+#cerrar-sesion,
+#btnCerrarSesion {
+    display: block;
+    width: fit-content;
+    margin: 8px auto 16px;
+    padding: 8px 18px;
+    border: 1px solid var(--rojo);
+    border-radius: 20px;
+    background: white;
+    color: var(--rojo);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.cerrar-sesion:hover,
+#cerrarSesion:hover,
+#cerrar-sesion:hover,
+#btnCerrarSesion:hover {
+    background: var(--rojo);
+    color: white;
+    transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     li, button, .menu a {
         animation: none;
@@ -348,4 +399,64 @@ article p {
     main {
         padding: 32px 64px;
     }
+}
+
+/* =========================================================
+   LOGIN Y REGISTRO (body class="pagina-auth")
+   Va al final para ganarle a las reglas de arriba
+   ========================================================= */
+body.pagina-auth {
+    display: flex;
+    flex-direction: column;
+}
+
+body.pagina-auth main {
+    display: block;
+    flex: 1;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 32px 16px;
+}
+
+body.pagina-auth h1 {
+    margin: 0 0 18px;
+    font-size: 26px;
+    color: var(--azul);
+    text-align: center;
+}
+
+body.pagina-auth section {
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+}
+
+body.pagina-auth form {
+    margin: 0 0 16px;
+    padding: 24px;
+    border-top: 4px solid var(--azul-claro);
+    border-radius: 12px;
+    background: white;
+    box-shadow: var(--sombra);
+}
+
+body.pagina-auth form input {
+    margin-bottom: 6px;
+}
+
+body.pagina-auth form button {
+    width: 100%;
+    margin-top: 6px;
+}
+
+body.pagina-auth main > p {
+    margin: 0;
+    text-align: center;
+}
+
+body.pagina-auth footer {
+    margin-top: auto;
 }
