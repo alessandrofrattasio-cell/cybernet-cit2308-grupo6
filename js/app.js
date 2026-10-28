@@ -1,8 +1,10 @@
 document.addEventListener("alpine:init", () => {
   
-    const serviciosRepo = new ServiciosRepository();
-    const serviciosService = new ServiciosService(serviciosRepo);
-    window.serviciosService = serviciosService;
+    if (typeof ServiciosRepository !== "undefined") {
+        const serviciosRepo = new ServiciosRepository();
+        const serviciosService = new ServiciosService(serviciosRepo);
+        window.serviciosService = serviciosService;
+    }
     
     const style = document.createElement('style');
     style.innerHTML = '[x-cloak] { display: none !important; }';
@@ -16,6 +18,14 @@ document.addEventListener("alpine:init", () => {
         });
         Alpine.data("listaClientes", function () {
             return listaClientesController(servicioClientes);
+        });
+    }
+
+    if (typeof LocalStorageSesionRepository !== "undefined") {
+        let repositorioSesiones = new LocalStorageSesionRepository();
+        let servicioSesiones = new SesionService(repositorioSesiones);
+        Alpine.data("listaSesiones", function () {
+            return listaSesionesController(servicioSesiones);
         });
     }
 

@@ -25,8 +25,9 @@ class ClienteService {
         if (cliente.nombre.trim().length < 3) {
             throw new Error("El nombre debe tener al menos 3 letras");
         }
-        if (cliente.rut.trim() === "") {
-            throw new Error("El RUT es obligatorio");
+        let formatoRut = /^[0-9]{7,8}-[0-9kK]$/;
+        if (formatoRut.test(cliente.rut.trim()) === false) {
+            throw new Error("Por favor ingresa un RUT válido (ej: 12345678-9)");
         }
         if (cliente.computador === "") {
             throw new Error("Debes elegir un computador");

@@ -3,12 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="clientes.css">
 	<title>Clientes</title>
+	<script defer src="js/conexionController.js"></script>
+	<script defer src="js/registrarServiceWorker.js"></script>
 	<script defer src="js/repositorio.js"></script>
 	<script defer src="js/clienteRepository.js"></script>
 	<script defer src="js/clienteService.js"></script>
 	<script defer src="js/clienteController.js"></script>
+	<script defer src="js/sesionRepository.js"></script>
+	<script defer src="js/sesionService.js"></script>
+	<script defer src="js/sesionController.js"></script>
 	<script defer src="js/app.js"></script>
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
 </head>
@@ -25,7 +31,6 @@
 			<a href="resumen.html">Resumen</a>
 		</nav>
 	</header>
-
 	<main>
 		<section x-data="formularioCliente">
 			<h2>Agregar cliente</h2>
@@ -37,7 +42,7 @@
 
 				<div>
 					<label for="rut">RUT</label>
-					<input type="text" id="rut" x-model="rut" required>
+					<input type="text" id="rut" x-model="rut" placeholder="12345678-9" required>
 				</div>
 
 				<div>
@@ -63,7 +68,33 @@
 			<ul>
 				<template x-for="cliente in clientes" :key="cliente.id">
 					<li>
-						<span x-text="cliente.nombre + ' - ' + cliente.rut + ' - ' + cliente.computador"></span>
+						<span x-show="editandoId !== cliente.id" x-text="cliente.nombre + ' - ' + cliente.rut + ' - ' + cliente.computador"></span>
+						<input x-show="editandoId === cliente.id" type="text" x-model="cliente.nombre" minlength="3" aria-label="Nombre">
+						<input x-show="editandoId === cliente.id" type="text" x-model="cliente.rut" aria-label="RUT">
+						<select x-show="editandoId === cliente.id" x-model="cliente.computador" aria-label="Computador asignado">
+							<option value="PC 01">PC 01</option>
+							<option value="PC 02">PC 02</option>
+							<option value="PC 03">PC 03</option>
+						</select>
+						<button type="button" x-show="editandoId !== cliente.id" @click="empezarEdicion(cliente)">Editar</button>
+						<button type="button" x-show="editandoId !== cliente.id" @click="eliminar(cliente.id)">Eliminar</button>
+						<button type="button" x-show="editandoId === cliente.id" @click="guardarEdicion(cliente)">Guardar</button>
+						<button type="button" x-show="editandoId === cliente.id" @click="cancelarEdicion()">Cancelar</button>
+						<button type="button" x-show="editandoId !== cliente.id" @click="pedirSesion(cliente)">Iniciar sesión</button>						
+					</li>
+				</template>
+			</ul>
+		</section>
+		<section x-data="listaSesiones" x-init="cargar()" @iniciar-sesion.window="iniciar($event.detail)">
+			<h2>Sesiones</h2>
+			<p x-show="cargando">Cargando sesiones...</p>
+			<p class="error" x-show="error" x-text="error"></p>
+			<p x-show="estaVacia()">Todavía no hay sesiones.</p>
+			<ul>
+				<template x-for="sesion in sesiones" :key="sesion.id">
+					<li>
+						<span x-text="describir(sesion)"></span>
+						<button type="button" x-show="sesion.estado === 'activa'" @click="finalizar(sesion.id)">Finalizar sesión</button>
 					</li>
 				</template>
 			</ul>
