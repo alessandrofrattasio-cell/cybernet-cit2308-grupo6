@@ -10,12 +10,10 @@
     --sombra-fuerte: 0 6px 16px rgba(31, 58, 95, 0.18);
 }
 
-/* Regla global corregida */
 * {
     box-sizing: border-box;
 }
 
-/* Oculta elementos Alpine.js antes de inicializar para evitar parpadeos */
 [x-cloak] {
     display: none !important;
 }
@@ -64,7 +62,6 @@ header h1 {
     transform: translateY(-1px);
 }
 
-/* Marca de navegación activa generica */
 .menu a.activo, 
 .menu a[href="clientes.html"] {
     background: white;
@@ -88,7 +85,6 @@ section,
     box-shadow: var(--sombra);
 }
 
-/* Estilos para los 4 Estados Obligatorios de Alpine.js */
 .estado-cargando {
     color: var(--azul-claro);
     font-weight: 600;
@@ -221,6 +217,13 @@ button.secundario:hover {
     box-shadow: 0 4px 8px rgba(107, 114, 128, 0.35);
 }
 
+button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
 form button {
     width: 100%;
 }
@@ -280,6 +283,30 @@ li input, li select {
     }
 }
 
+p {
+    text-align: center;
+}
+
+a {
+    color: #007f9b;
+}
+
+article {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+article h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+article p {
+    text-align: left;
+}
+
 @media (prefers-reduced-motion: reduce) {
     li, button, .menu a {
         animation: none;
@@ -287,7 +314,6 @@ li input, li select {
     }
 }
 
-/* Responsive: Tablet (768px+) */
 @media (min-width: 768px) {
     header {
         padding: 22px 32px;
@@ -303,7 +329,6 @@ li input, li select {
     }
 }
 
-/* Responsive: Desktop (1024px+) */
 @media (min-width: 1024px) {
     main {
         display: grid;
@@ -316,7 +341,6 @@ li input, li select {
     }
 }
 
-/* Responsive: Escritorio Ancho (1440px+) */
 @media (min-width: 1440px) {
     header {
         padding: 26px 64px;
