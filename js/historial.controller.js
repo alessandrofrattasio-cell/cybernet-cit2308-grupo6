@@ -1,7 +1,8 @@
-document.addEventListener('alpine:init', () => {
-    Alpine.data('historialController', (sesionesService) => ({
+window.historialController = function(sesionesService) {
+    return {
         sesiones: [],
         estado: 'cargando', 
+        
         async init() {
             await this.cargarDatos();
         },
@@ -15,5 +16,5 @@ document.addEventListener('alpine:init', () => {
                 this.estado = 'error';
             }
         }
-    }));
-});
+    };
+};

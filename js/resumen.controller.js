@@ -1,5 +1,5 @@
-document.addEventListener('alpine:init', () => {
-    Alpine.data('resumenController', (sesionesService) => ({
+window.resumenController = function(sesionesService) {
+    return {
         resumen: null,
         estado: 'cargando',
 
@@ -16,5 +16,5 @@ document.addEventListener('alpine:init', () => {
                 this.estado = 'error';
             }
         }
-    }));
-});
+    };
+};

@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios | Cyber-Cafe</title>
+    <title>Servicios | CyberNet</title>
     <link rel="stylesheet" href="style.css">
 
-    <script src="js/conexionController.js" defer></script>
-    <script src="js/registrarServiceWorker.js" defer></script>
-    <script src="js/repositorio.js" defer></script>
-    <script src="js/servicios.repository.js" defer></script>
-    <script src="js/servicios.service.js" defer></script>
-    <script src="js/servicios.controller.js" defer></script>
-    <script src="js/app.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+    
+    <script src="js/repositorio.js"></script>
+
+    
+    <script src="js/servicios.repository.js"></script>
+    <script src="js/servicios.service.js"></script>
+
+    
+    <script src="js/app.js"></script>
+    <script src="js/servicios.controller.js"></script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body>
    <header>
@@ -30,7 +34,7 @@
       </nav>
    </header>
 
-   <main x-data="serviciosController(window.serviciosService)" class="contenedor-servicios">
+   <main x-data="serviciosController()" x-cloak>
     <div x-show="estado === 'cargando'" class="estado-cargando">
         <p>Cargando servicios...</p>
     </div>
