@@ -460,3 +460,34 @@ body.pagina-auth main > p {
 body.pagina-auth footer {
     margin-top: auto;
 }
+/* ---------- Aviso sin conexión ---------- */
+body > p[role="status"] {
+    margin: 0;
+    padding: 8px 16px;
+    background: #fff7e6;
+    border-bottom: 1px solid #f5d28a;
+    color: #7a4b00;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ---------- Mensajes dentro de formularios ---------- */
+form p[role="alert"] {
+    margin: 0;
+    padding: 10px 14px;
+    border-left: 4px solid var(--rojo);
+    border-radius: 6px;
+    background: #fdecee;
+    color: var(--rojo);
+    text-align: left;
+}
+
+form p[role="status"] {
+    margin: 0;
+    padding: 10px 14px;
+    border-left: 4px solid var(--azul-claro);
+    border-radius: 6px;
+    background: #eaf3fb;
+    color: var(--azul);
+    text-align: left;
+}

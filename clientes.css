@@ -184,6 +184,17 @@ li input, li select {
     flex: 1 1 140px;
     width: auto;
 }
+footer {
+    padding: 16px;
+    color: var(--gris);
+    font-size: 14px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    color: var(--gris);
+}
 @keyframes aparecer {
     from {
         opacity: 0;
