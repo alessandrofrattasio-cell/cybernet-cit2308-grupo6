@@ -33,7 +33,7 @@ document.addEventListener("alpine:init", () => {
 
     if (typeof LocalStorageUsuarioRepository !== "undefined") {
         let repositorioUsuarios = new LocalStorageUsuarioRepository();
-        let servicioUsuarios = new UsuariosService(repositorioUsuarios);
+      let servicioUsuarios = new UsuarioService(repositorioUsuarios);
         Alpine.data("formularioRegistroUsuarios", function () {
             return crearFormularioRegistroUsuarios(servicioUsuarios);
         });
