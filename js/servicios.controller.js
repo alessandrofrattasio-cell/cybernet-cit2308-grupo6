@@ -1,78 +1,40 @@
-window.serviciosController = function() {
+window.serviciosController = function(servicio) {
     return {
         listaServicios: [],
-        formulario: {
-            computador: '',
-            servicio: '',
-            cantidad: 1
-        },
-
-        getService() {
-            return window.serviciosService || window.servicioServicios;
-        },
+        estado: 'cargando', 
+        mensajeError: '',
+        errorFormulario: '',
+        formulario: { computador: '', servicio: '', cantidad: 1 },
 
         async init() {
             await this.cargarDatos();
         },
 
         async cargarDatos() {
+            this.estado = 'cargando';
             try {
-                const srv = this.getService();
-                let datos = [];
-
-                if (srv) {
-                    if (typeof srv.obtenerTodos === 'function') {
-                        datos = await srv.obtenerTodos();
-                    } else if (typeof srv.listar === 'function') {
-                        datos = await srv.listar();
-                    }
-                }
-
-                this.listaServicios = Array.isArray(datos) ? datos : [];
+                this.listaServicios = await servicio.obtenerServicios();
+                this.estado = this.listaServicios.length === 0 ? 'vacio' : 'normal';
             } catch (error) {
-                console.error("Error al cargar servicios:", error);
-                this.listaServicios = [];
+                this.estado = 'error';
+                this.mensajeError = "No se pudieron cargar los servicios.";
             }
         },
 
         async guardarNuevo() {
-            if (!this.formulario.computador || !this.formulario.servicio || !this.formulario.cantidad) {
-                alert("Por favor completa todos los campos.");
-                return;
-            }
-
-            const nuevoItem = {
-                id: Date.now().toString(),
-                computador: this.formulario.computador,
-                servicio: this.formulario.servicio,
-                cantidad: Number(this.formulario.cantidad)
-            };
-
+            this.errorFormulario = '';
             try {
-                const srv = this.getService();
-                if (srv) {
-                    if (typeof srv.crear === 'function') await srv.crear(nuevoItem);
-                    else if (typeof srv.guardar === 'function') await srv.guardar(nuevoItem);
-                }
-
+                await servicio.agregarServicio(this.formulario);
                 this.formulario = { computador: '', servicio: '', cantidad: 1 };
                 await this.cargarDatos();
             } catch (error) {
-                console.error("Error al guardar servicio:", error);
+                this.errorFormulario = error.message;
             }
         },
 
         async borrar(id) {
-            try {
-                const srv = this.getService();
-                if (srv) {
-                    if (typeof srv.eliminar === 'function') await srv.eliminar(id);
-                    else if (typeof srv.borrar === 'function') await srv.borrar(id);
-                }
-                await this.cargarDatos();
-            } catch (error) {
-                console.error("Error al borrar servicio:", error);
-            }
+            await servicio.borrarServicio(id);
+            await this.cargarDatos();
         }
     };
 };

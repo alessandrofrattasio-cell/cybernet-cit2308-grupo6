@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resumen | CyberNet</title>
+    <title>Resumen | Cyber-Cafe</title>
     <link rel="stylesheet" href="style.css">
 
-    
+    <script src="js/conexionController.js" defer></script>
+    <script src="js/registrarServiceWorker.js" defer></script>
     <script src="js/repositorio.js" defer></script>
-    <script src="js/servicios.repository.js" defer></script>
-    <script src="js/servicios.service.js" defer></script>
     <script src="js/sesionRepository.js" defer></script>
     <script src="js/sesionService.js" defer></script>
-
-    
     <script src="js/resumen.controller.js" defer></script>
     <script src="js/app.js" defer></script>
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </head>
 <body>
    <header>
@@ -30,41 +26,22 @@
          <a href="clientes.html">Clientes</a>
          <a href="servicios.html">Servicios</a>
          <a href="historial.html">Historial</a>
-         <a href="resumen.html" class="activo">Resumen</a>
+         <a href="resumen.html" class="activo" >Resumen</a>
       </nav>
    </header>
 
-   <main x-data="resumenController()" class="servicios-main">
-      <section class="seccion-bloque">
-          <h2 class="titulo-seccion">Resumen general del sistema</h2>
-
-          <div x-show="estado === 'cargando'" class="mensaje-vacio">
-              <p>Cargando información del resumen...</p>
-          </div>
-
-          <div x-show="estado === 'error'" class="mensaje-vacio">
-              <p x-text="mensajeError"></p>
-          </div>
-
-          <div x-show="estado === 'normal'" class="contenedor-lista">
-              <div class="tarjeta-servicio">
-                  <span class="texto-servicio">Computadores registrados:</span>
-                  <span class="texto-servicio" x-text="totales.computadores"></span>
-              </div>
-              <div class="tarjeta-servicio">
-                  <span class="texto-servicio">Clientes registrados:</span>
-                  <span class="texto-servicio" x-text="totales.clientes"></span>
-              </div>
-              <div class="tarjeta-servicio">
-                  <span class="texto-servicio">Sesiones activas / registradas:</span>
-                  <span class="texto-servicio" x-text="totales.sesiones"></span>
-              </div>
-              <div class="tarjeta-servicio">
-                  <span class="texto-servicio">Servicios adicionales registrados:</span>
-                  <span class="texto-servicio" x-text="totales.servicios"></span>
-              </div>
-          </div>
-      </section>
+   <main x-data="resumenController(window.sesionesService)" class="contenedor-resumen">
+    <div x-show="estado === 'cargando'" class="estado-cargando">Calculando resumen...</div>
+    <div x-show="estado === 'error'" x-cloak class="estado-error">Error al cargar el resumen.</div>
+    <div x-show="estado === 'vacio'" x-cloak class="estado-vacio">Todavía no hay sesiones finalizadas hoy.</div>
+    
+    <div x-show="estado === 'normal'" x-cloak>
+        <div class="tarjeta-resumen">
+            <h3>Total Recaudado: $<span x-text="resumen?.totalDinero"></span></h3>
+            <p>Sesiones terminadas: <span x-text="resumen?.totalSesiones"></span></p>
+            <p>Equipos utilizados: <span x-text="resumen?.equiposUtilizados"></span></p>
+        </div>
+    </div>
    </main>
 
    <footer>

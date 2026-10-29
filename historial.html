@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial | CyberNet</title>
+    <title>Historial | Cyber-Cafe</title>
     <link rel="stylesheet" href="style.css">
 
-    
+    <script src="js/conexionController.js" defer></script>
+    <script src="js/registrarServiceWorker.js" defer></script>
     <script src="js/repositorio.js" defer></script>
     <script src="js/sesionRepository.js" defer></script>
-    <script src="js/sesionService.js" defer></script> <!-- CORREGIDO: sin "s" extra -->
-    <script src="js/servicios.repository.js" defer></script>
-    <script src="js/servicios.service.js" defer></script>
-
-    
+    <script src="js/sesionService.js" defer></script>
     <script src="js/historial.controller.js" defer></script>
     <script src="js/app.js" defer></script>
-
-    <!-- Alpine.js -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </head>
 <body>
    <header>
@@ -34,42 +30,24 @@
       </nav>
    </header>
 
-   <main x-data="historialController()" class="servicios-main">
-      <section class="seccion-bloque">
-          <h2 class="titulo-seccion">Registro histórico de uso</h2>
-
-          
-          <div x-show="estado === 'cargando'" class="mensaje-vacio">
-              <p>Cargando historial de sesiones...</p>
-          </div>
-
-          
-          <div x-show="estado === 'error'" class="mensaje-vacio">
-              <p x-text="mensajeError || 'Error al cargar el historial.'"></p>
-          </div>
-
-          
-          <div x-show="estado === 'normal' && listaHistorial.length === 0" class="mensaje-vacio">
-              <p>No hay registro de sesiones guardadas actualmente.</p>
-          </div>
-
-          
-          <div x-show="estado === 'normal' && listaHistorial.length > 0" class="contenedor-lista">
-              <template x-for="item in listaHistorial" :key="item.id || Math.random()">
-                  <div class="tarjeta-servicio">
-                      <div>
-                          <span class="texto-servicio" x-text="(item.computador || item.equipo || 'PC') + ' - ' + (item.cliente || item.usuario || 'Cliente general') + (item.duracion ? ' (' + item.duracion + ')' : '')"></span>
-                      </div>
-                      <span class="texto-servicio" style="font-size: 0.85rem; color: #64748b;" x-text="item.fecha || item.horaInicio || 'Registrado'"></span>
-                  </div>
-              </template>
-          </div>
-      </section>
+   <main x-data="historialController(window.sesionesService)" class="contenedor-historial">
+    <div x-show="estado === 'cargando'" class="estado-cargando">Cargando historial...</div>
+    <div x-show="estado === 'error'" x-cloak class="estado-error">Error al cargar el historial.</div>
+    <div x-show="estado === 'vacio'" x-cloak class="estado-vacio">Todavía no hay sesiones finalizadas.</div>
+    
+    <div x-show="estado === 'normal'" x-cloak>
+        <ul class="lista-historial">
+            <template x-for="sesion in sesiones" :key="sesion.id">
+                <li>
+                    <span x-text="describir(sesion)"></span>
+                </li>
+            </template>
+        </ul>
+    </div>
    </main>
 
    <footer>
       <p>CyberNet - Plataforma para administrar un cibercafé</p>
    </footer>
-
 </body>
 </html>

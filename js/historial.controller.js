@@ -1,50 +1,39 @@
-window.historialController = function() {
-    return {
+document.addEventListener('alpine:init', () => {
+    Alpine.data('historialController', (sesionesService) => ({
+        sesiones: [],
         estado: 'cargando',
-        mensajeError: '',
-        listaHistorial: [],
 
         async init() {
-            await this.cargarHistorial();
+            await this.cargarDatos();
         },
 
-        async cargarHistorial() {
+        async cargarDatos() {
             this.estado = 'cargando';
-            this.mensajeError = '';
-
             try {
-                const srv = window.servicioSesiones;
-                let datos = [];
-
-                if (srv) {
-                    if (typeof srv.obtenerTodos === 'function') {
-                        datos = await srv.obtenerTodos();
-                    } else if (typeof srv.listar === 'function') {
-                        datos = await srv.listar();
-                    }
-                }
-
-                if (!Array.isArray(datos)) datos = [];
-
-                
-                const unicos = [];
-                const idsVistas = new Set();
-                for (const item of datos) {
-                    if (!item) continue;
-                    const idStr = item.id ? String(item.id) : JSON.stringify(item);
-                    if (!idsVistas.has(idStr)) {
-                        idsVistas.add(idStr);
-                        unicos.push(item);
-                    }
-                }
-
-                this.listaHistorial = unicos;
-                this.estado = 'normal';
+                this.sesiones = await sesionesService.obtenerHistorial();
+                this.estado = this.sesiones.length === 0 ? 'vacio' : 'normal';
             } catch (error) {
-                console.error("Error al cargar historial:", error);
-                this.mensajeError = "No se pudo cargar el historial de sesiones.";
                 this.estado = 'error';
             }
+        },
+
+        formatearHora(milisegundos) {
+            let fecha = new Date(milisegundos);
+            let hora = fecha.getHours();
+            let minutos = fecha.getMinutes();
+            if (hora < 10) {
+                hora = '0' + hora;
+            }
+            if (minutos < 10) {
+                minutos = '0' + minutos;
+            }
+            return hora + ':' + minutos;
+        },
+
+        describir(sesion) {
+            return sesion.clienteNombre + ' - ' + sesion.computador + ' - ' +
+                this.formatearHora(sesion.horaInicio) + ' a ' +
+                this.formatearHora(sesion.horaFin) + ' - $' + sesion.monto;
         }
-    };
-};
+    }));
+});

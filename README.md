@@ -1,37 +1,44 @@
 # CyberNet
 
-Plataforma web para administrar un cibercafé (CIT2308 — Desarrollo Web y Móvil, UDP 2026-2).
-
-Esta segunda entrega corresponde al **frontend dinámico y aplicación web progresiva (PWA)**: todas las vistas están construidas con Alpine.js, organizadas por dominio en capas (vista, controlador, servicio y repositorio), con datos guardados en `localStorage` detrás de un repositorio asíncrono, y funcionan sin conexión gracias a un Service Worker.
+Plataforma web para administrar un cibercafé. Segunda entrega: frontend dinámico con Alpine.js y aplicación web progresiva (PWA).
 
 ## Integrantes
 
-- **Alessandro Frattasio** — Usuarios (login y registro) + Computadores
-- **Vicente Encina** — Clientes + Sesiones (iniciar y finalizar)
-- **Kaled Quijón** — Servicios adicionales + Historial + Resumen
+- **Alessandro Frattasio**: Usuarios (login y registro) + Computadores
+- **Vicente Encina**: Clientes + Sesiones
+- **Kaled Quijón**: Servicios adicionales + Historial + Resumen
 
-## Infraestructura
+## IP elástica
 
-- Instancia EC2 (Ubuntu 24.04 LTS) en AWS Academy Learner Lab, región `us-east-1`
-- Servidor web: nginx
-- IP pública (elástica, fija): **34.204.130.78**
-- Security Group: solo puertos 22 (SSH) y 80 (HTTP) habilitados
+La aplicación está en la instancia EC2 con IP elástica (fija): **34.204.130.78**
 
-Aplicación en línea: `http://34.204.130.78` (también `http://34.204.130.78/login.html`).
+- `http://34.204.130.78/login.html`
 
 ## Cómo correr el proyecto
 
-Es un sitio estático (HTML, CSS y JavaScript), no necesita compilar ni instalar dependencias. Alpine.js se carga desde un CDN, así que la primera vez se necesita conexión a internet.
+**En el servidor:** la aplicación está desplegada en la instancia EC2 de AWS con nginx, que sirve los archivos del proyecto. Se accede en `http://34.204.130.78/login.html`. Para actualizarla, se entra por SSH a la instancia y se trae la última versión de la rama `main`.
 
-1. Clonar el repositorio y entrar a la carpeta:
-   ```bash
-   git clone <url-del-repositorio>
-   cd cybernet-cit2308-grupo6
-   ```
-2. Levantar un servidor local (cualquiera de las dos opciones):
-   ```bash
-   python -m http.server 8000
-   ```
-   o abrir la carpeta en VS Code y usar la extensión **Live Server**.
+**En local (desarrollo y pruebas):** el proyecto es HTML, CSS y JavaScript, no necesita instalar nada. Alpine.js se carga desde un CDN, por lo que la primera vez se necesita internet.
+
+1. Clonar el repositorio y abrir la carpeta.
+2. Levantar un servidor local con `python -m http.server 8000` (o con la extensión Live Server de VS Code).
 3. Abrir `http://localhost:8000/login.html` en el navegador.
 
+Los datos se guardan en el `localStorage` del navegador.
+
+## Mapa de dominios
+
+| Dominio | Vista | Controlador | Servicio | Repositorio |
+|---|---|---|---|---|
+| Usuarios | `login.html`, `register.html` | `js/usuarioController.js` | `js/usuarioService.js` | `js/usuarioRepository.js` |
+| Computadores | `computadores.html` | `js/computadores-controlador.js` | `js/computadores-servicio.js` | `js/computadores-repositorio.js` |
+| Clientes | `clientes.html` | `js/clienteController.js` | `js/clienteService.js` | `js/clienteRepository.js` |
+| Sesiones | `clientes.html` (sección Sesiones) | `js/sesionController.js` | `js/sesionService.js` | `js/sesionRepository.js` |
+| Servicios adicionales | `servicios.html` | `js/servicios.controller.js` | `js/servicios.service.js` | `js/servicios.repository.js` |
+| Historial | `historial.html` | `js/historial.controller.js` | `js/sesionService.js` | `js/sesionRepository.js` |
+| Resumen | `resumen.html` | `js/resumen.controller.js` | `js/sesionService.js` | `js/sesionRepository.js` |
+
+Archivos que usan todos los dominios:
+
+- `js/repositorio.js`: clase base `Repository`, el contrato con los métodos `async`. Cada repositorio la extiende.
+- `js/app.js`: único archivo que crea los repositorios y servicios y registra los componentes de Alpine.

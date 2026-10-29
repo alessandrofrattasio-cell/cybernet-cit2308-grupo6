@@ -1,50 +1,37 @@
-
-class ServiciosRepository extends BaseRepository {
+class ServiciosRepository extends Repository {
     constructor() {
         super();
-        this.storageKey = 'cybernet_servicios';
+        this.clave = 'servicios';
     }
 
     async listar() {
-        const data = localStorage.getItem(this.storageKey);
-        return data ? JSON.parse(data) : [];
+        const datos = localStorage.getItem(this.clave);
+        return datos ? JSON.parse(datos) : [];
     }
 
-    async obtenerTodos() {
-        return await this.listar();
+    async crear(servicio) {
+        const servicios = await this.listar();
+        servicio.id = Date.now().toString(); 
+        servicios.push(servicio);
+        localStorage.setItem(this.clave, JSON.stringify(servicios));
+        return servicio;
     }
 
-    async obtenerPorId(id) {
-        const lista = await this.listar();
-        return lista.find(item => String(item.id) === String(id)) || null;
-    }
-
-    async crear(item) {
-        const lista = await this.listar();
+    async editar(id, datosActualizados) {
+        const servicios = await this.listar();
+        const index = servicios.findIndex(s => s.id === id);
         
-        
-        const existe = lista.some(i => String(i.id) === String(item.id));
-        if (!existe) {
-            lista.push(item);
-            localStorage.setItem(this.storageKey, JSON.stringify(lista));
+        if (index !== -1) {
+           Object.assign(servicios[index], datosActualizados);
+            localStorage.setItem(this.clave, JSON.stringify(servicios));
+            return servicios[index];
         }
-        return item;
-    }
-
-    async guardar(item) {
-        return await this.crear(item);
+        throw new Error("Servicio no encontrado");
     }
 
     async eliminar(id) {
-        let lista = await this.listar();
-        lista = lista.filter(item => String(item.id) !== String(id));
-        localStorage.setItem(this.storageKey, JSON.stringify(lista));
-        return true;
-    }
-
-    async borrar(id) {
-        return await this.eliminar(id);
+        let servicios = await this.listar();
+        servicios = servicios.filter(s => s.id !== id);
+        localStorage.setItem(this.clave, JSON.stringify(servicios));
     }
 }
-
-window.ServiciosRepository = ServiciosRepository;
