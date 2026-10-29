@@ -6,10 +6,6 @@ document.addEventListener("alpine:init", () => {
         window.serviciosService = serviciosService;
     }
     
-    const style = document.createElement('style');
-    style.innerHTML = '[x-cloak] { display: none !important; }';
-    document.head.appendChild(style);
-
     if (typeof LocalStorageClienteRepository !== "undefined") {
         let repositorioClientes = new LocalStorageClienteRepository();
         let servicioClientes = new ClienteService(repositorioClientes);
