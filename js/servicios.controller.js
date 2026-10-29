@@ -1,6 +1,5 @@
-document.addEventListener('alpine:init', () => {
-
-    Alpine.data('serviciosController', (servicio) => ({
+window.serviciosController = function(servicio) {
+    return {
         listaServicios: [],
         estado: 'cargando', 
         mensajeError: '',
@@ -35,5 +34,5 @@ document.addEventListener('alpine:init', () => {
             await servicio.borrarServicio(id);
             await this.cargarDatos();
         }
-    }));
-});
+    };
+};
