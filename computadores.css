@@ -1,0 +1,298 @@
+body.pagina-computadores {
+   margin: 0;
+   padding: 0;
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   background: linear-gradient(180deg, #f4f7fb, #dfe7f1);
+   background-attachment: fixed;
+   color: #1f2937;
+   font-family: "Segoe UI", Arial, sans-serif;
+   line-height: 1.5;
+}
+
+body.pagina-computadores * {
+   box-sizing: border-box;
+}
+
+/* ---------- Header y menú ---------- */
+body.pagina-computadores header {
+   padding: 18px 16px;
+   background: linear-gradient(135deg, #1f3a5f, #2a6fb0);
+   color: white;
+   text-align: left;
+   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+body.pagina-computadores header p {
+   margin: 0 0 14px;
+   color: white;
+   font-size: 28px;
+   font-weight: 700;
+   letter-spacing: 0.5px;
+   text-align: left;
+}
+
+body.pagina-computadores .menu {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: flex-start;
+   gap: 8px;
+   margin: 0;
+   padding: 0;
+}
+
+body.pagina-computadores .menu a {
+   padding: 7px 16px;
+   border-radius: 20px;
+   background: rgba(255, 255, 255, 0.15);
+   color: white;
+   font-size: 14px;
+   font-weight: 400;
+   text-decoration: none;
+   transition: background 0.2s, transform 0.2s;
+}
+
+body.pagina-computadores .menu a:hover {
+   background: rgba(255, 255, 255, 0.3);
+   transform: translateY(-1px);
+}
+
+body.pagina-computadores .menu a[href="computadores.html"] {
+   background: white;
+   color: #1f3a5f;
+   font-weight: 700;
+}
+
+/* ---------- Contenido centrado ---------- */
+body.pagina-computadores main {
+   display: block;
+   flex: 1;
+   width: 100%;
+   max-width: 900px;
+   margin: 0 auto;
+   padding: 16px;
+}
+
+body.pagina-computadores h1 {
+   margin: 0 0 16px;
+   color: #1f3a5f;
+   font-size: 28px;
+   text-align: left;
+}
+
+body.pagina-computadores h2 {
+   margin: 0;
+   color: #1f3a5f;
+   font-size: 20px;
+}
+
+body.pagina-computadores h2::before {
+   content: "";
+   display: inline-block;
+   width: 5px;
+   height: 20px;
+   margin-right: 10px;
+   border-radius: 3px;
+   background: #2a6fb0;
+   vertical-align: middle;
+}
+
+/* ---------- Sección (tarjeta blanca) ---------- */
+body.pagina-computadores section {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr);
+   gap: 14px;
+   margin-bottom: 16px;
+   padding: 20px;
+   border-top: 4px solid #2a6fb0;
+   border-radius: 12px;
+   background: white;
+   box-shadow: 0 2px 8px rgba(31, 58, 95, 0.1);
+}
+
+body.pagina-computadores section > * {
+   grid-column: 1 / -1;
+   margin-top: 0;
+   margin-bottom: 0;
+}
+
+body.pagina-computadores section > h2:not(:first-child) {
+   margin-top: 8px;
+}
+
+body.pagina-computadores section > p {
+   color: #6b7280;
+   text-align: left;
+}
+
+/* ---------- Formulario ---------- */
+body.pagina-computadores label {
+   display: block;
+   margin: 0 0 5px;
+   color: #1f3a5f;
+   font-size: 14px;
+   font-weight: 600;
+}
+
+body.pagina-computadores input,
+body.pagina-computadores select {
+   display: block;
+   width: 100%;
+   margin: 0 0 14px;
+   padding: 10px 12px;
+   border: 1px solid #d5dbe5;
+   border-radius: 8px;
+   background: #fbfcfe;
+   font-size: 16px;
+   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+body.pagina-computadores input:focus,
+body.pagina-computadores select:focus {
+   outline: none;
+   background: white;
+   border-color: #2a6fb0;
+   box-shadow: 0 0 0 3px rgba(42, 111, 176, 0.2);
+}
+
+body.pagina-computadores button {
+   padding: 10px 18px;
+   border: none;
+   border-radius: 8px;
+   background: #2a6fb0;
+   color: white;
+   font-size: 14px;
+   font-weight: 600;
+   cursor: pointer;
+   box-shadow: 0 2px 4px rgba(42, 111, 176, 0.3);
+   transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+body.pagina-computadores button:hover {
+   background: #1f5a93;
+   transform: translateY(-1px);
+   box-shadow: 0 4px 8px rgba(42, 111, 176, 0.35);
+}
+
+body.pagina-computadores button:active {
+   transform: translateY(0);
+}
+
+body.pagina-computadores form button {
+   width: 100%;
+   margin: 0;
+}
+
+/* ---------- Tarjetas de computadores ---------- */
+body.pagina-computadores section > article {
+   grid-column: auto;
+   min-width: 0;
+   padding: 14px;
+   border: 1px solid #d5dbe5;
+   border-left: 4px solid #2a6fb0;
+   border-radius: 10px;
+   background: #f8fafc;
+   text-align: left;
+   transition: box-shadow 0.2s, transform 0.2s;
+}
+
+body.pagina-computadores article:hover {
+   box-shadow: 0 6px 16px rgba(31, 58, 95, 0.18);
+   transform: translateY(-2px);
+}
+
+body.pagina-computadores article h3 {
+   margin: 0 0 6px;
+   color: #1f3a5f;
+}
+
+body.pagina-computadores article p {
+   margin: 0 0 6px;
+   color: #1f2937;
+}
+
+body.pagina-computadores article button:last-child {
+   background: #b00020;
+   box-shadow: 0 2px 4px rgba(176, 0, 32, 0.3);
+}
+
+body.pagina-computadores article button:last-child:hover {
+   background: #8a0019;
+}
+
+/* ---------- Cerrar sesión (ordenado y centrado) ---------- */
+body.pagina-computadores .cerrar-sesion,
+body.pagina-computadores #cerrarSesion,
+body.pagina-computadores #cerrar-sesion,
+body.pagina-computadores #btnCerrarSesion {
+   display: block;
+   width: fit-content;
+   margin: 8px auto 16px;
+   padding: 8px 18px;
+   border: 1px solid #b00020;
+   border-radius: 20px;
+   background: white;
+   color: #b00020;
+   font-size: 14px;
+   font-weight: 600;
+   text-decoration: none;
+   box-shadow: none;
+   cursor: pointer;
+   transition: background 0.2s, color 0.2s;
+}
+
+body.pagina-computadores .cerrar-sesion:hover,
+body.pagina-computadores #cerrarSesion:hover,
+body.pagina-computadores #cerrar-sesion:hover,
+body.pagina-computadores #btnCerrarSesion:hover {
+   background: #b00020;
+   color: white;
+   transform: none;
+}
+
+/* ---------- Footer ---------- */
+body.pagina-computadores footer {
+   margin-top: auto;
+   padding: 16px;
+   color: #6b7280;
+   font-size: 14px;
+   text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (prefers-reduced-motion: reduce) {
+   body.pagina-computadores article,
+   body.pagina-computadores button,
+   body.pagina-computadores .menu a {
+      transition: none;
+   }
+}
+
+@media (min-width: 768px) {
+   body.pagina-computadores header {
+      padding: 22px 32px;
+   }
+
+   body.pagina-computadores main {
+      padding: 24px 32px;
+   }
+
+   body.pagina-computadores .menu a {
+      font-size: 15px;
+   }
+
+   body.pagina-computadores section {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+   }
+
+   body.pagina-computadores form button {
+      width: auto;
+   }
+}
+
+@media (min-width: 1440px) {
+   body.pagina-computadores header {
+      padding: 26px 64px;
+   }
+}

@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Historial de sesiones | CyberNet</title>
-   <link rel="stylesheet" href="resumen.css">
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial | Cyber-Cafe</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="js/conexionController.js" defer></script>
+    <script src="js/registrarServiceWorker.js" defer></script>
+    <script src="js/repositorio.js" defer></script>
+    <script src="js/sesionRepository.js" defer></script>
+    <script src="js/sesionService.js" defer></script>
+    <script src="js/historial.controller.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </head>
 <body>
    <header>
@@ -15,19 +25,25 @@
          <a href="computadores.html">Computadores</a>
          <a href="clientes.html">Clientes</a>
          <a href="servicios.html">Servicios</a>
-         <a href="historial.html">Historial</a>
+         <a href="historial.html" class="activo">Historial</a>
          <a href="resumen.html">Resumen</a>
       </nav>
    </header>
 
-   <main>
-      <section>
-         <h2>Sesiones finalizadas</h2>
-         <ul>
-            <li>Cliente: Ana Pérez | Computador 01 | 2 horas | $2.000</li>
-            <li>Cliente: Luis Soto | Computador 02 | 1 hora | $1.000</li>
-         </ul>
-      </section>
+   <main x-data="historialController(window.sesionesService)" class="contenedor-historial">
+    <div x-show="estado === 'cargando'" class="estado-cargando">Cargando historial...</div>
+    <div x-show="estado === 'error'" x-cloak class="estado-error">Error al cargar el historial.</div>
+    <div x-show="estado === 'vacio'" x-cloak class="estado-vacio">Todavía no hay sesiones finalizadas.</div>
+    
+    <div x-show="estado === 'normal'" x-cloak>
+        <ul class="lista-historial">
+            <template x-for="sesion in sesiones" :key="sesion.id">
+                <li>
+                    <span x-text="describir(sesion)"></span>
+                </li>
+            </template>
+        </ul>
+    </div>
    </main>
 
    <footer>

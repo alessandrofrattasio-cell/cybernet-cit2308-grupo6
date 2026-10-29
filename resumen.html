@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Resumen de actividad | CyberNet</title>
-   <link rel="stylesheet" href="resumen.css">
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen | Cyber-Cafe</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="js/conexionController.js" defer></script>
+    <script src="js/registrarServiceWorker.js" defer></script>
+    <script src="js/repositorio.js" defer></script>
+    <script src="js/sesionRepository.js" defer></script>
+    <script src="js/sesionService.js" defer></script>
+    <script src="js/resumen.controller.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </head>
 <body>
    <header>
@@ -16,24 +26,27 @@
          <a href="clientes.html">Clientes</a>
          <a href="servicios.html">Servicios</a>
          <a href="historial.html">Historial</a>
-         <a href="resumen.html">Resumen</a>
+         <a href="resumen.html" class="activo" >Resumen</a>
       </nav>
    </header>
 
-   <main>
-      <section>
-         <h2>Datos del día</h2>
-         <ul>
-            <li>Sesiones finalizadas: 2</li>
-            <li>Computadores utilizados: 2</li>
-            <li>Servicios adicionales: 3</li>
-            <li>Recaudación total: $5.000</li>
-         </ul>
-      </section>
+   <main x-data="resumenController(window.sesionesService)" class="contenedor-resumen">
+    <div x-show="estado === 'cargando'" class="estado-cargando">Calculando resumen...</div>
+    <div x-show="estado === 'error'" x-cloak class="estado-error">Error al cargar el resumen.</div>
+    <div x-show="estado === 'vacio'" x-cloak class="estado-vacio">Todavía no hay sesiones finalizadas hoy.</div>
+    
+    <div x-show="estado === 'normal'" x-cloak>
+        <div class="tarjeta-resumen">
+            <h3>Total Recaudado: $<span x-text="resumen?.totalDinero"></span></h3>
+            <p>Sesiones terminadas: <span x-text="resumen?.totalSesiones"></span></p>
+            <p>Equipos utilizados: <span x-text="resumen?.equiposUtilizados"></span></p>
+        </div>
+    </div>
    </main>
 
    <footer>
       <p>CyberNet - Plataforma para administrar un cibercafé</p>
    </footer>
+
 </body>
 </html>

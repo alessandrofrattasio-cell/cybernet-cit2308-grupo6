@@ -1,0 +1,49 @@
+document.addEventListener("alpine:init", () => {
+  
+    if (typeof ServiciosRepository !== "undefined") {
+        const serviciosRepo = new ServiciosRepository();
+        const serviciosService = new ServiciosService(serviciosRepo);
+        window.serviciosService = serviciosService;
+    }
+    
+    if (typeof LocalStorageClienteRepository !== "undefined") {
+        let repositorioClientes = new LocalStorageClienteRepository();
+        let servicioClientes = new ClienteService(repositorioClientes);
+        Alpine.data("formularioCliente", function () {
+            return formularioClienteController(servicioClientes);
+        });
+        Alpine.data("listaClientes", function () {
+            return listaClientesController(servicioClientes);
+        });
+    }
+
+    if (typeof LocalStorageSesionRepository !== "undefined") {
+        let repositorioSesiones = new LocalStorageSesionRepository();
+        let servicioSesiones = new SesionService(repositorioSesiones);
+        window.sesionesService = servicioSesiones;
+        Alpine.data("listaSesiones", function () {
+            return listaSesionesController(servicioSesiones);
+        });
+    }
+
+    if (typeof ComputadoresRepository !== "undefined") {
+        let repositorioComputadores = new ComputadoresRepository();
+        let servicioComputadores = new ComputadoresService(repositorioComputadores);
+        registrarComputadores(Alpine, servicioComputadores);
+    }
+
+    if (typeof LocalStorageUsuarioRepository !== "undefined") {
+        let repositorioUsuarios = new LocalStorageUsuarioRepository();
+      let servicioUsuarios = new UsuarioService(repositorioUsuarios);
+        Alpine.data("formularioRegistroUsuarios", function () {
+            return crearFormularioRegistroUsuarios(servicioUsuarios);
+        });
+        Alpine.data("formularioLoginUsuarios", function () {
+            return crearFormularioLoginUsuarios(servicioUsuarios);
+        });
+    }
+
+    if (typeof crearEstadoConexion !== "undefined") {
+        Alpine.data("estadoConexion", crearEstadoConexion);
+    }
+});

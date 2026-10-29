@@ -1,31 +1,44 @@
 # CyberNet
-Esta primera entrega corresponde a la infraestructura de despliegue y las vistas estáticas (HTML/CSS/JS básico) que representan el flujo completo de ambos roles.
+
+Plataforma web para administrar un cibercafé. Segunda entrega: frontend dinámico con Alpine.js y aplicación web progresiva (PWA).
 
 ## Integrantes
 
-- **Alessandro Frattasio** — Login + estado de computadores
-- **Vicente Encina** — Clientes + iniciar/finalizar sesión
-- **Kaled Quijón** — Servicios adicionales + historial + resumen
+- **Alessandro Frattasio**: Usuarios (login y registro) + Computadores
+- **Vicente Encina**: Clientes + Sesiones
+- **Kaled Quijón**: Servicios adicionales + Historial + Resumen
 
-## Infraestructura
+## IP elástica
 
-- Instancia EC2 (Ubuntu 24.04 LTS) en AWS Academy Learner Lab, región `us-east-1`
-- Servidor web: nginx
-- IP pública (elástica, fija): **34.204.130.78**
-- Security Group: solo puertos 22 (SSH) y 80 (HTTP) habilitados
+La aplicación está en la instancia EC2 con IP elástica (fija): **34.204.130.78**
 
-## Rutas implementadas
+- `http://34.204.130.78/login.html`
 
-| Ruta | Propósito |
-|---|---|
-| `/login.html` | Autenticación del Encargado/Administrador para acceder al sistema |
-| `/register.html` | Registro de una nueva cuenta de Encargado/Administrador |
-| `/computadores.html` | Vista principal del Encargado/Administrador: estado de los computadores (disponible/ocupado/fuera de servicio) e inicio/fin de sesión de uso |
-| `/clientes.html` | Registro de clientes y asignación a un computador disponible |
-| `/servicios.html` | Registro de servicios adicionales (impresión, bebidas, snacks) asociados a una sesión |
-| `/historial.html` | Historial de sesiones finalizadas, con cliente, computador, duración y monto cobrado |
-| `/resumen.html` | Resumen de actividad diaria: sesiones finalizadas, equipos utilizados y recaudación total |
+## Cómo correr el proyecto
 
-## Cómo acceder
+**En el servidor:** la aplicación está desplegada en la instancia EC2 de AWS con nginx, que sirve los archivos del proyecto. Se accede en `http://34.204.130.78/login.html`. Para actualizarla, se entra por SSH a la instancia y se trae la última versión de la rama `main`.
 
-Abrir `http://34.204.130.78` en el navegador, o directamente cualquiera de las rutas listadas (ej. `http://34.204.130.78/login.html`).
+**En local (desarrollo y pruebas):** el proyecto es HTML, CSS y JavaScript, no necesita instalar nada. Alpine.js se carga desde un CDN, por lo que la primera vez se necesita internet.
+
+1. Clonar el repositorio y abrir la carpeta.
+2. Levantar un servidor local con `python -m http.server 8000` (o con la extensión Live Server de VS Code).
+3. Abrir `http://localhost:8000/login.html` en el navegador.
+
+Los datos se guardan en el `localStorage` del navegador.
+
+## Mapa de dominios
+
+| Dominio | Vista | Controlador | Servicio | Repositorio |
+|---|---|---|---|---|
+| Usuarios | `login.html`, `register.html` | `js/usuarioController.js` | `js/usuarioService.js` | `js/usuarioRepository.js` |
+| Computadores | `computadores.html` | `js/computadores-controlador.js` | `js/computadores-servicio.js` | `js/computadores-repositorio.js` |
+| Clientes | `clientes.html` | `js/clienteController.js` | `js/clienteService.js` | `js/clienteRepository.js` |
+| Sesiones | `clientes.html` (sección Sesiones) | `js/sesionController.js` | `js/sesionService.js` | `js/sesionRepository.js` |
+| Servicios adicionales | `servicios.html` | `js/servicios.controller.js` | `js/servicios.service.js` | `js/servicios.repository.js` |
+| Historial | `historial.html` | `js/historial.controller.js` | `js/sesionService.js` | `js/sesionRepository.js` |
+| Resumen | `resumen.html` | `js/resumen.controller.js` | `js/sesionService.js` | `js/sesionRepository.js` |
+
+Archivos que usan todos los dominios:
+
+- `js/repositorio.js`: clase base `Repository`, el contrato con los métodos `async`. Cada repositorio la extiende.
+- `js/app.js`: único archivo que crea los repositorios y servicios y registra los componentes de Alpine.

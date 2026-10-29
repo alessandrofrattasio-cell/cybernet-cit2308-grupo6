@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Servicios adicionales | CyberNet</title>
-   <link rel="stylesheet" href="resumen.css">
-   <script src="servicios.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios | Cyber-Cafe</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="js/conexionController.js" defer></script>
+    <script src="js/registrarServiceWorker.js" defer></script>
+    <script src="js/repositorio.js" defer></script>
+    <script src="js/servicios.repository.js" defer></script>
+    <script src="js/servicios.service.js" defer></script>
+    <script src="js/servicios.controller.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </head>
 <body>
    <header>
@@ -15,46 +24,51 @@
          <a href="register.html">Registro</a>
          <a href="computadores.html">Computadores</a>
          <a href="clientes.html">Clientes</a>
-         <a href="servicios.html">Servicios</a>
+         <a href="servicios.html" class="activo">Servicios</a>
          <a href="historial.html">Historial</a>
          <a href="resumen.html">Resumen</a>
       </nav>
    </header>
 
-   <main>
-      <section>
-         <h2>Agregar servicio</h2>
-         <form>
-            <label for="computador">Computador:</label>
-            <select id="computador" name="computador" required>
-               <option value="">Selecciona un computador</option>
-               <option value="pc01">Computador 01</option>
-               <option value="pc02">Computador 02</option>
-            </select>
+   <main x-data="serviciosController(window.serviciosService)" class="contenedor-servicios">
+    <div x-show="estado === 'cargando'" class="estado-cargando">
+        <p>Cargando servicios...</p>
+    </div>
 
-            <label for="servicio">Servicio:</label>
-            <select id="servicio" name="servicio" required>
-               <option value="">Selecciona un servicio</option>
-               <option value="impresion">Impresión</option>
-               <option value="bebida">Bebida</option>
-               <option value="snack">Snack</option>
-            </select>
+    <div x-show="estado === 'error'" class="estado-error" x-cloak>
+        <p x-text="mensajeError"></p>
+        <button @click="cargarDatos()">Reintentar</button>
+    </div>
 
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" min="1" required>
+    <div x-show="estado === 'vacio'" class="estado-vacio" x-cloak>
+        <p>No hay servicios registrados actualmente.</p>
+    </div>
 
-            <button type="submit">Agregar servicio</button>
-         </form>
-      </section>
+    <div x-show="estado === 'vacio' || estado === 'normal'" x-cloak>
+        <p x-show="errorFormulario" x-text="errorFormulario" class="estado-error" role="alert"></p>
+        <form @submit.prevent="guardarNuevo()" class="formulario-servicios">
+            <input type="text" x-model="formulario.computador" placeholder="Nombre del equipo" required>
+            <input type="text" x-model="formulario.servicio" placeholder="Tipo de servicio" required>
+            <input type="number" x-model="formulario.cantidad" min="1" required>
+            <button type="submit">Agregar Servicio</button>
+        </form>
+    </div>
 
-      <section>
-         <h2>Servicios agregados</h2>
-         <ul id="lista-servicios"></ul>
-      </section>
+    <div x-show="estado === 'normal'" class="estado-normal" x-cloak>
+        <ul class="lista-servicios">
+            <template x-for="item in listaServicios" :key="item.id">
+                <li>
+                    <span x-text="item.computador + ' - ' + item.servicio + ' (x' + item.cantidad + ')'"></span>
+                    <button @click="borrar(item.id)" class="peligro">Eliminar</button>
+                </li>
+            </template>
+        </ul>
+    </div>
    </main>
 
    <footer>
       <p>CyberNet - Plataforma para administrar un cibercafé</p>
    </footer>
+   
 </body>
 </html>
