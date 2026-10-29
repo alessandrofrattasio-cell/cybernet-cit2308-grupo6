@@ -1,13 +1,14 @@
-window.serviciosController = function(servicio) {
+window.serviciosController = function() {
     return {
         listaServicios: [],
-        estado: 'cargando', 
-        mensajeError: '',
-        formulario: { computador: '', servicio: '', cantidad: 1 },
+        formulario: {
+            computador: '',
+            servicio: '',
+            cantidad: 1
+        },
 
-        
         getService() {
-            return servicio || window.serviciosService;
+            return window.serviciosService || window.servicioServicios;
         },
 
         async init() {
@@ -15,42 +16,106 @@ window.serviciosController = function(servicio) {
         },
 
         async cargarDatos() {
-            this.estado = 'cargando';
-            const srv = this.getService();
-            
-            if (!srv) {
-                this.estado = 'error';
-                this.mensajeError = "Servicio no disponible.";
-                return;
-            }
-
             try {
-                this.listaServicios = await srv.obtenerServicios();
-                this.estado = this.listaServicios.length === 0 ? 'vacio' : 'normal';
+                const srv = this.getService();
+                let datos = null;
+
+                if (srv) {
+                    if (typeof srv.obtenerTodos === 'function') {
+                        datos = await srv.obtenerTodos();
+                    } else if (typeof srv.listar === 'function') {
+                        datos = await srv.listar();
+                    }
+                }
+
+                if (!datos || !Array.isArray(datos) || datos.length === 0) {
+                    const local = localStorage.getItem('cybernet_servicios');
+                    datos = local ? JSON.parse(local) : [];
+                }
+
+                
+                localStorage.removeItem('servicios');
+
+                
+                const unicos = [];
+                const idsVistas = new Set();
+                for (const item of (Array.isArray(datos) ? datos : [])) {
+                    if (item && item.id) {
+                        const idStr = String(item.id);
+                        if (!idsVistas.has(idStr)) {
+                            idsVistas.add(idStr);
+                            unicos.push(item);
+                        }
+                    }
+                }
+
+                
+                localStorage.setItem('cybernet_servicios', JSON.stringify(unicos));
+                this.listaServicios = unicos;
             } catch (error) {
-                this.estado = 'error';
-                this.mensajeError = "No se pudieron cargar los servicios.";
+                console.error("Error al cargar datos:", error);
+                const local = localStorage.getItem('cybernet_servicios');
+                this.listaServicios = local ? JSON.parse(local) : [];
             }
         },
 
         async guardarNuevo() {
-            const srv = this.getService();
-            if (!srv) return;
+            if (!this.formulario.computador || !this.formulario.servicio || !this.formulario.cantidad) {
+                alert("Por favor completa todos los campos.");
+                return;
+            }
+
+            const nuevoItem = {
+                id: Date.now().toString(),
+                computador: this.formulario.computador,
+                servicio: this.formulario.servicio,
+                cantidad: Number(this.formulario.cantidad)
+            };
 
             try {
-                await srv.agregarServicio(this.formulario);
+                const srv = this.getService();
+                let guardado = false;
+
+                if (srv) {
+                    if (typeof srv.crear === 'function') {
+                        await srv.crear(nuevoItem);
+                        guardado = true;
+                    } else if (typeof srv.guardar === 'function') {
+                        await srv.guardar(nuevoItem);
+                        guardado = true;
+                    }
+                }
+
+                
+                if (!guardado) {
+                    const locales = JSON.parse(localStorage.getItem('cybernet_servicios') || '[]');
+                    locales.push(nuevoItem);
+                    localStorage.setItem('cybernet_servicios', JSON.stringify(locales));
+                }
+
                 this.formulario = { computador: '', servicio: '', cantidad: 1 };
                 await this.cargarDatos();
             } catch (error) {
-                alert(error.message);
+                console.error("Error al guardar:", error);
+                await this.cargarDatos();
             }
         },
 
         async borrar(id) {
-            const srv = this.getService();
-            if (!srv) return;
+            try {
+                const srv = this.getService();
+                if (srv) {
+                    if (typeof srv.eliminar === 'function') await srv.eliminar(id);
+                    else if (typeof srv.borrar === 'function') await srv.borrar(id);
+                }
+            } catch (e) {
+                console.error("Error al borrar:", e);
+            }
 
-            await srv.borrarServicio(id);
+            let locales = JSON.parse(localStorage.getItem('cybernet_servicios') || '[]');
+            locales = locales.filter(item => String(item.id) !== String(id));
+            localStorage.setItem('cybernet_servicios', JSON.stringify(locales));
+
             await this.cargarDatos();
         }
     };

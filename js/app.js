@@ -28,6 +28,12 @@ if (typeof LocalStorageUsuarioRepository !== "undefined") {
 
 document.addEventListener("alpine:init", () => {
 
+    if (typeof window.serviciosController === "function") {
+        Alpine.data("serviciosController", function () {
+            return window.serviciosController(window.serviciosService);
+        });
+    }
+
     if (typeof window.servicioComputadores !== "undefined" && typeof registrarComputadores === "function") {
         registrarComputadores(Alpine, window.servicioComputadores);
     }

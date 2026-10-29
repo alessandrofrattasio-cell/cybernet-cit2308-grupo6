@@ -1,37 +1,31 @@
-class ServiciosRepository extends Repository {
+class ServiciosRepository {
     constructor() {
-        super();
-        this.clave = 'servicios';
+        this.storageKey = 'cybernet_servicios';
     }
 
-    async listar() {
-        const datos = localStorage.getItem(this.clave);
+    obtenerTodos() {
+        const datos = localStorage.getItem(this.storageKey);
         return datos ? JSON.parse(datos) : [];
     }
 
-    async crear(servicio) {
-        const servicios = await this.listar();
-        servicio.id = Date.now().toString(); 
-        servicios.push(servicio);
-        localStorage.setItem(this.clave, JSON.stringify(servicios));
-        return servicio;
+    listar() {
+        return this.obtenerTodos();
     }
 
-    async editar(id, datosActualizados) {
-        const servicios = await this.listar();
-        const index = servicios.findIndex(s => s.id === id);
-        
-        if (index !== -1) {
-           Object.assign(servicios[index], datosActualizados);
-            localStorage.setItem(this.clave, JSON.stringify(servicios));
-            return servicios[index];
-        }
-        throw new Error("Servicio no encontrado");
+    guardar(item) {
+        const servicios = this.obtenerTodos();
+        servicios.push(item);
+        localStorage.setItem(this.storageKey, JSON.stringify(servicios));
+        return item;
     }
 
-    async eliminar(id) {
-        let servicios = await this.listar();
-        servicios = servicios.filter(s => s.id !== id);
-        localStorage.setItem(this.clave, JSON.stringify(servicios));
+    crear(item) {
+        return this.guardar(item);
+    }
+
+    eliminar(id) {
+        let servicios = this.obtenerTodos();
+        servicios = servicios.filter(s => String(s.id) !== String(id));
+        localStorage.setItem(this.storageKey, JSON.stringify(servicios));
     }
 }

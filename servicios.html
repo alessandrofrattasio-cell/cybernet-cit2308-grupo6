@@ -7,17 +7,11 @@
     <link rel="stylesheet" href="style.css">
 
     
-    <script src="js/repositorio.js"></script>
-
-    
-    <script src="js/servicios.repository.js"></script>
-    <script src="js/servicios.service.js"></script>
-
-    
-    <script src="js/app.js"></script>
-    <script src="js/servicios.controller.js"></script>
-
-    
+    <script src="js/repositorio.js" defer></script>
+    <script src="js/servicios.repository.js" defer></script>
+    <script src="js/servicios.service.js" defer></script>
+    <script src="js/servicios.controller.js" defer></script>
+    <script src="js/app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body>
@@ -34,37 +28,58 @@
       </nav>
    </header>
 
-   <main x-data="serviciosController()" x-cloak>
-    <div x-show="estado === 'cargando'" class="estado-cargando">
-        <p>Cargando servicios...</p>
-    </div>
+   <main x-data="serviciosController()" class="servicios-main">
+      
+      
+      <section class="seccion-bloque">
+          <h2 class="titulo-seccion">Registrar nuevo servicio</h2>
+          <form @submit.prevent="guardarNuevo()" class="formulario-servicios">
+              <div class="campo-grupo">
+                  <label for="computador">Equipo / Computador:</label>
+                  <select id="computador" x-model="formulario.computador" required>
+                      <option value="" disabled selected>Ej: PC-01</option>
+                      <option value="PC 1">PC 1</option>
+                      <option value="PC 2">PC 2</option>
+                      <option value="PC 3">PC 3</option>
+                      <option value="PC 4">PC 4</option>
+                      <option value="PC 5">PC 5</option>
+                  </select>
+              </div>
 
-    <div x-show="estado === 'error'" class="estado-error" x-cloak>
-        <p x-text="mensajeError"></p>
-        <button @click="cargarDatos()">Reintentar</button>
-    </div>
+              <div class="campo-grupo">
+                  <label for="servicio">Tipo de Servicio / Consumo:</label>
+                  <input type="text" id="servicio" x-model="formulario.servicio" placeholder="Ej: Bebida 500ml, Impresión B/N" required>
+              </div>
 
-    <div x-show="estado === 'vacio'" class="estado-vacio" x-cloak>
-        <p>No hay servicios registrados actualmente.</p>
-    </div>
+              <div class="campo-grupo">
+                  <label for="cantidad">Cantidad:</label>
+                  <input type="number" id="cantidad" x-model="formulario.cantidad" min="1" required>
+              </div>
 
-    <div x-show="estado === 'normal'" class="estado-normal" x-cloak>
-        <form @submit.prevent="guardarNuevo()" class="formulario-servicios">
-            <input type="text" x-model="formulario.computador" placeholder="Nombre del equipo" required>
-            <input type="text" x-model="formulario.servicio" placeholder="Tipo de servicio" required>
-            <input type="number" x-model="formulario.cantidad" min="1" required>
-            <button type="submit">Agregar Servicio</button>
-        </form>
+              <button type="submit" class="btn-agregar">Agregar servicio</button>
+          </form>
+      </section>
 
-        <ul class="lista-servicios">
-            <template x-for="item in listaServicios" :key="item.id">
-                <li>
-                    <span x-text="item.computador + ' - ' + item.servicio + ' (x' + item.cantidad + ')'"></span>
-                    <button @click="borrar(item.id)">Eliminar</button>
-                </li>
-            </template>
-        </ul>
-    </div>
+      
+      <section class="seccion-bloque">
+          <h2 class="titulo-seccion">Servicios registrados</h2>
+
+          
+          <div x-show="!listaServicios || listaServicios.length === 0" class="mensaje-vacio">
+              <p>No hay servicios registrados actualmente.</p>
+          </div>
+
+          
+          <div x-show="listaServicios && listaServicios.length > 0" class="contenedor-lista">
+              <template x-for="item in listaServicios" :key="item.id || Math.random()">
+                  <div class="tarjeta-servicio">
+                      <span class="texto-servicio" x-text="(item.computador || item.equipo || 'PC') + ' - ' + (item.servicio || item.nombre) + ' (x' + (item.cantidad || 1) + ')'"></span>
+                      <button @click="borrar(item.id)" class="btn-eliminar">Eliminar</button>
+                  </div>
+              </template>
+          </div>
+      </section>
+
    </main>
 
    <footer>
