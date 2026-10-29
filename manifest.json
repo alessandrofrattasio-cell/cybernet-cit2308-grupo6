@@ -1,7 +1,7 @@
 {
   "name": "Cybernet - Gestión de Ciber café",
   "short_name": "Cybernet",
-  "start_url": "./index.html",
+  "start_url": "./login.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
