@@ -1,58 +1,23 @@
 
-
-if (typeof ServiciosRepository !== "undefined") {
-    const serviciosRepo = new ServiciosRepository();
-    window.serviciosService = new ServiciosService(serviciosRepo);
-}
-
-if (typeof LocalStorageClienteRepository !== "undefined") {
-    const repositorioClientes = new LocalStorageClienteRepository();
-    window.servicioClientes = new ClienteService(repositorioClientes);
-}
-
-if (typeof LocalStorageSesionRepository !== "undefined") {
-    const repositorioSesiones = new LocalStorageSesionRepository();
-    window.servicioSesiones = new SesionService(repositorioSesiones);
-}
-
-if (typeof ComputadoresRepository !== "undefined") {
-    const repositorioComputadores = new ComputadoresRepository();
-    window.servicioComputadores = new ComputadoresService(repositorioComputadores);
-}
-
-if (typeof LocalStorageUsuarioRepository !== "undefined") {
-    const repositorioUsuarios = new LocalStorageUsuarioRepository();
-    window.servicioUsuarios = new UsuarioService(repositorioUsuarios);
-}
-
-
-document.addEventListener("alpine:init", () => {
-
-    if (typeof window.serviciosController === "function") {
-        Alpine.data("serviciosController", function () {
-            return window.serviciosController(window.serviciosService);
-        });
-    }
-
-    if (typeof window.servicioComputadores !== "undefined" && typeof registrarComputadores === "function") {
-        registrarComputadores(Alpine, window.servicioComputadores);
-    }
-
-    if (typeof window.servicioUsuarios !== "undefined") {
-        if (typeof crearFormularioRegistroUsuarios === "function") {
-            Alpine.data("formularioRegistroUsuarios", function () {
-                return crearFormularioRegistroUsuarios(window.servicioUsuarios);
-            });
+(function inicializarCompositionRoot() {
+    try {
+        
+        if (typeof window.ServiciosRepository === 'function' && typeof window.ServiciosService === 'function') {
+            const serviciosRepo = new window.ServiciosRepository();
+            const serviciosService = new window.ServiciosService(serviciosRepo);
+            window.serviciosService = serviciosService;
+            window.servicioServicios = serviciosService; // Alias de compatibilidad
         }
-        if (typeof crearFormularioLoginUsuarios === "function") {
-            Alpine.data("formularioLoginUsuarios", function () {
-                return crearFormularioLoginUsuarios(window.servicioUsuarios);
-            });
+
+        
+        if (typeof window.SesionRepository === 'function' && typeof window.SesionService === 'function') {
+            const sesionRepo = new window.SesionRepository();
+            const sesionService = new window.SesionService(sesionRepo);
+            window.servicioSesiones = sesionService;
         }
-    }
 
-    if (typeof crearEstadoConexion !== "undefined") {
-        Alpine.data("estadoConexion", crearEstadoConexion);
+        console.log('✅ Composition Root cargado correctamente.');
+    } catch (error) {
+        console.error('❌ Error al inicializar el Composition Root en app.js:', error);
     }
-
-});
+})();

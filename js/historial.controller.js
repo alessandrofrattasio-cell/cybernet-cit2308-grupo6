@@ -13,8 +13,8 @@ window.historialController = function() {
             this.mensajeError = '';
 
             try {
-                let datos = null;
                 const srv = window.servicioSesiones;
+                let datos = [];
 
                 if (srv) {
                     if (typeof srv.obtenerTodos === 'function') {
@@ -22,11 +22,6 @@ window.historialController = function() {
                     } else if (typeof srv.listar === 'function') {
                         datos = await srv.listar();
                     }
-                }
-
-                if (!datos || !Array.isArray(datos) || datos.length === 0) {
-                    const local = localStorage.getItem('cybernet_sesiones') || localStorage.getItem('sesiones');
-                    datos = local ? JSON.parse(local) : [];
                 }
 
                 if (!Array.isArray(datos)) datos = [];

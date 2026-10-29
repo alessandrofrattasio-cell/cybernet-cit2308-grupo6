@@ -1,40 +1,37 @@
-class LocalStorageSesionRepository extends Repository {
+
+class SesionRepository extends BaseRepository {
     constructor() {
         super();
-        this.clave = "sesiones";
+        this.storageKey = 'cybernet_sesiones';
     }
+
     async listar() {
-        let texto = localStorage.getItem(this.clave);
-        if (texto === null) {
-            return [];
-        }
-        return JSON.parse(texto);
+        const data = localStorage.getItem(this.storageKey) || localStorage.getItem('sesiones');
+        return data ? JSON.parse(data) : [];
     }
+
+    async obtenerTodos() {
+        return await this.listar();
+    }
+
+    async obtenerPorId(id) {
+        const lista = await this.listar();
+        return lista.find(item => String(item.id) === String(id)) || null;
+    }
+
     async crear(sesion) {
-        let sesiones = await this.listar();
-        sesion.id = Date.now();
-        sesiones.push(sesion);
-        localStorage.setItem(this.clave, JSON.stringify(sesiones));
+        const lista = await this.listar();
+        lista.push(sesion);
+        localStorage.setItem(this.storageKey, JSON.stringify(lista));
         return sesion;
     }
-        async editar(sesion) {
-        let sesiones = await this.listar();
-        for (let i = 0; i < sesiones.length; i++) {
-            if (sesiones[i].id === sesion.id) {
-                sesiones[i] = sesion;
-            }
-        }
-        localStorage.setItem(this.clave, JSON.stringify(sesiones));
-        return sesion;
-    }
+
     async eliminar(id) {
-        let sesiones = await this.listar();
-        let restantes = [];
-        for (let i = 0; i < sesiones.length; i++) {
-            if (sesiones[i].id !== id) {
-                restantes.push(sesiones[i]);
-            }
-        }
-        localStorage.setItem(this.clave, JSON.stringify(restantes));
+        let lista = await this.listar();
+        lista = lista.filter(item => String(item.id) !== String(id));
+        localStorage.setItem(this.storageKey, JSON.stringify(lista));
+        return true;
     }
 }
+
+window.SesionRepository = SesionRepository;

@@ -1,30 +1,34 @@
 class ServiciosService {
     constructor(repository) {
+        if (!repository) {
+            throw new Error('ServiciosService requiere una instancia de repositorio.');
+        }
         this.repository = repository;
     }
 
+    async obtenerTodos() {
+        return await this.repository.obtenerTodos();
+    }
+
     async listar() {
-        if (this.repository && typeof this.repository.listar === 'function') {
-            return await this.repository.listar();
-        }
-        if (this.repository && typeof this.repository.obtenerTodos === 'function') {
-            return await this.repository.obtenerTodos();
-        }
-        return [];
+        return await this.repository.listar();
     }
 
     async crear(item) {
-        if (this.repository && typeof this.repository.crear === 'function') {
-            return await this.repository.crear(item);
-        }
-        if (this.repository && typeof this.repository.guardar === 'function') {
-            return await this.repository.guardar(item);
-        }
+        return await this.repository.crear(item);
+    }
+
+    async guardar(item) {
+        return await this.repository.crear(item);
     }
 
     async eliminar(id) {
-        if (this.repository && typeof this.repository.eliminar === 'function') {
-            return await this.repository.eliminar(id);
-        }
+        return await this.repository.eliminar(id);
+    }
+
+    async borrar(id) {
+        return await this.repository.eliminar(id);
     }
 }
+
+window.ServiciosService = ServiciosService;

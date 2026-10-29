@@ -18,51 +18,41 @@ window.resumenController = function() {
             this.mensajeError = '';
 
             try {
-                const obtenerListaLimpia = async (servicioObj, storageKey) => {
-                    let datos = null;
-                    if (servicioObj) {
-                        if (typeof servicioObj.obtenerTodos === 'function') {
-                            datos = await servicioObj.obtenerTodos();
-                        } else if (typeof servicioObj.listar === 'function') {
-                            datos = await servicioObj.listar();
-                        }
+                const obtenerLista = async (servicioObj) => {
+                    if (!servicioObj) return [];
+                    let datos = [];
+                    if (typeof servicioObj.obtenerTodos === 'function') {
+                        datos = await servicioObj.obtenerTodos();
+                    } else if (typeof servicioObj.listar === 'function') {
+                        datos = await servicioObj.listar();
                     }
-
-                    if (!datos || !Array.isArray(datos)) {
-                        const local = localStorage.getItem(storageKey);
-                        datos = local ? JSON.parse(local) : [];
-                    }
-
-                    if (!Array.isArray(datos)) return [];
-
-                    
-                    const unicos = [];
-                    const ids = new Set();
-                    for (const item of datos) {
-                        if (item && item.id) {
-                            const idStr = String(item.id);
-                            if (!ids.has(idStr)) {
-                                ids.add(idStr);
-                                unicos.push(item);
-                            }
-                        } else if (item) {
-                            unicos.push(item);
-                        }
-                    }
-                    return unicos;
+                    return Array.isArray(datos) ? datos : [];
                 };
 
+                
                 const [servicios, computadores, clientes, sesiones] = await Promise.all([
-                    obtenerListaLimpia(window.serviciosService || window.servicioServicios, 'cybernet_servicios'),
-                    obtenerListaLimpia(window.servicioComputadores, 'cybernet_computadores'),
-                    obtenerListaLimpia(window.servicioClientes, 'cybernet_clientes'),
-                    obtenerListaLimpia(window.servicioSesiones, 'cybernet_sesiones')
+                    obtenerLista(window.serviciosService || window.servicioServicios),
+                    obtenerLista(window.servicioComputadores),
+                    obtenerLista(window.servicioClientes),
+                    obtenerLista(window.servicioSesiones)
                 ]);
 
-                this.totales.servicios = servicios.length;
-                this.totales.computadores = computadores.length;
-                this.totales.clientes = clientes.length;
-                this.totales.sesiones = sesiones.length;
+                
+                const contarUnicos = (lista) => {
+                    const vistos = new Set();
+                    return lista.filter(item => {
+                        if (!item || !item.id) return true;
+                        const idStr = String(item.id);
+                        if (vistos.has(idStr)) return false;
+                        vistos.add(idStr);
+                        return true;
+                    }).length;
+                };
+
+                this.totales.servicios = contarUnicos(servicios);
+                this.totales.computadores = contarUnicos(computadores);
+                this.totales.clientes = contarUnicos(clientes);
+                this.totales.sesiones = contarUnicos(sesiones);
 
                 this.estado = 'normal';
             } catch (error) {
