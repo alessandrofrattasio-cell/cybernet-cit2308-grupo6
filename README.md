@@ -1,5 +1,4 @@
 # CyberNet
-# CyberNet
 
 Plataforma web para administrar un cibercafé (CIT2308 — Desarrollo Web y Móvil, UDP 2026-2).
 
