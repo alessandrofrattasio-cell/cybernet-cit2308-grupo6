@@ -61,4 +61,17 @@
                 <template x-for="computador in computadores" :key="computador.id + '-' + computador.nombre + '-' + computador.estado + '-' + computador.precioHora">
                     <article class="computador" x-data="{ equipo: computador }">
                         <h3 x-text="equipo.nombre"></h3>
-                        <p>Estado: <span x-text="equipo.estado
+                        <p>Estado: <span x-text="equipo.estado"></span></p>
+                        <p>Precio por hora: $<span x-text="equipo.precioHora"></span></p>
+                        <button type="button" @click="$dispatch('editar-computador', equipo)">Editar</button>
+                        <button type="button" @click="$dispatch('eliminar-computador', equipo.id)">Eliminar</button>
+                    </article>
+                </template>
+            </section>
+        </main>
+        <a href="login.html" class="cerrar-sesion">Cerrar sesión</a>
+        <footer>
+            <p>CyberNet - Plataforma para administrar un cibercafé</p>
+        </footer>
+    </body>
+</html>
