@@ -42,3 +42,6 @@ Archivos que usan todos los dominios:
 
 - `js/repositorio.js`: clase base `Repository`, el contrato con los métodos `async`. Cada repositorio la extiende.
 - `js/app.js`: único archivo que crea los repositorios y servicios y registra los componentes de Alpine.
+
+- Link del video :
+- https://drive.google.com/file/d/17F2pL6IROBTsJgPZI09WKjU7SGL3vvwS/view?usp=drivesdk
